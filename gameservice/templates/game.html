@@ -6,11 +6,18 @@ window.addEventListener("message", function(evt) {
 			// If LOAD, update the score
 			if(evt.data.messageType === "SCORE") {
 				alert("score submitted: " + evt.data.score);
-
 			}
+
       else if (evt.data.messageType === "SAVE") {
+
         alert("saved game with score: " + evt.data.gameState.score);
       }
+
+      else if (evt.data.messageType === "LOAD_REQUEST") {
+        alert("load request, responding");
+
+      }
+
       else if (evt.data.messageType === "SETTING") {
         adjustIframe(evt.data.options.width, evt.data.options.height);
         alert("settings requested: " + evt.data.options.height + "x" + evt.data.options.width);
@@ -27,9 +34,17 @@ function adjustIframe(x, y) {
   document.getElementById("freimi").height = y;
 }
 
+// function respond() {
+//   var message = {
+//     "messageType" = "LOAD",
+//     "gameState" = gamestate
+//   };
+//   window.postMessage(message, "*");
+// }
+// https://rawgit.com/anuemiliat/wsd-group-666-games/master/games/reactit.html
+// https://sakarinvillapaitapeli2.herokuapp.com/sakarinvillapaitapeli2.html
 </script>
 </head>
 <html>
-<div id="asd">jotakin</div>
 <iframe id="freimi" src="https://sakarinvillapaitapeli2.herokuapp.com/sakarinvillapaitapeli2.html" height=800 width=90% name="iframe1"></iframe>
 </html>
