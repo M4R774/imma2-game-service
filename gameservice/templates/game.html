@@ -6,6 +6,9 @@
 <button id="button1", onclick=changetarget()>Vaihda iFramen target</button> <br><br>
 <input id="joku" type="text" name="urlpath" style="width: 400px;"> paste URL</input> <br><br>
 <iframe id="freimi" src="C:/Users/saempylae/Koulu/seitti/seitti2017/example-game/example_game.html" height=800 width=90% name="iframe1"></iframe>
+<br><br>
+<div id="tekstit"><div>
+
 </body>
 <script>
 
@@ -15,23 +18,23 @@ window.addEventListener("message", function(evt) {
 
 			// If LOAD, update the score
 			if(evt.data.messageType === "SCORE") {
-				alert("score submitted: " + evt.data.score);
+
+				changemessage("score submitted: " + evt.data.score);
 			}
 
       else if (evt.data.messageType === "SAVE") {
 				gs = evt.data.gameState;
-        alert("saved game with score: " + evt.data.gameState.score);
+        changemessage("saved game with score: " + evt.data.gameState.score);
       }
 
       else if (evt.data.messageType === "LOAD_REQUEST") {
-        alert("load request, responding");
 				respond();
 
       }
 
       else if (evt.data.messageType === "SETTING") {
         adjustIframe(evt.data.options.width, evt.data.options.height);
-        alert("settings requested: " + evt.data.options.height + "x" + evt.data.options.width);
+        changemessage("settings requested: " + evt.data.options.height + "x" + evt.data.options.width);
       }
 
 		});
@@ -51,6 +54,7 @@ function respond() {
 					"gameState": gs
 				};
 
+	changemessage("Responded with load game with score of: " + gs.score );
 	var iframe = document.getElementById("freimi")
 	var x = iframe.contentWindow;
 	x.postMessage(msg, '*');
@@ -61,6 +65,11 @@ function changetarget() {
 	var newpath = tekstikentta.value;
 	var iframe = document.getElementById("freimi");
 	iframe.src = newpath;
+}
+
+function changemessage(msg) {
+	var elem = document.getElementById("tekstit");
+	elem.innerHTML += msg +"<br>";
 }
 
 </script>
