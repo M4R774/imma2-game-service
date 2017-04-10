@@ -19,7 +19,7 @@ from django.conf import settings
 admin.autodiscover()
 from gameservice import views
 from django.conf.urls import url
-from imma2.core import views as core_views
+from . import views as core_views
 #from gameservice import usermanagement
 #from gameservice import models
 #from django.views.generic import TemplateView
