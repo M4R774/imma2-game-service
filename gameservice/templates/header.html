@@ -1,27 +1,12 @@
 {% block content %}
 <header>
 	<nav>
-		<ul id="nav">
-		<li><a href="/">Imma2 gameservice, next gen gaming</a></li>
-		</ul>
 		<ul id="MainNavigation">
-		  {% if false %}
-		  <li><a>Hey, {{ user.username }}.</a></li>
-		  <li><a href="/store">Store</a></li>
-		  <li><a href="/account">Account</a></li>
-		  <li><a href="/logout">Logout</a></li>
-		  {% if false %}
-		  <li><a href="/import/">Add Game</a></li>
-		  <li><a href="/gamelist/dev/">Your games</a></li>
-		  {% endif %}
-		  {% else %}
 		  <li><a href="{% url imma2.views.mainpage %}">HOME</a></li>
 		  <li><a href="{% url imma2.views.login %}">LOGIN</a></li>
 		  <li><a href="{% url imma2.views.register %}">REGISTER</a></li>
 		  <li><a href="{% url imma2.views.mainpage %}">CATEGORIES</a></li>
 		  <li><a href="{% url imma2.views.mainpage %}">ABOUT</a></li>
-		  
-		  {% endif %}
 		</ul>
 	</nav>
 </header>
