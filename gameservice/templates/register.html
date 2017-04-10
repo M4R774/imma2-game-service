@@ -14,15 +14,55 @@
 
 <div class="text">CREATE AN ACCOUNT</DIV>
 
-<form method="post">
+<script type="text/javascript">
+
+function checkForm(form) {
+  if (form.username.value == "") {
+    alert("Username cannot be blank!");
+    form.username.focus();
+    return false;
+  }
+
+  else if (form.e_mail.value == "") {
+    alert("Enter an email!");
+    form.e_mail.focus();
+    return false;
+  }
+
+  else if (form.password1.value == "") {
+    alert("Enter a password!");
+    form.e_mail.focus();
+    return false;
+  }
+
+
+
+  if (form.password1.value != "" && form.password1.value == form.password2.value) {
+    if (form.password1.value.length < 6) {
+      alert("Password must contain at least six (6) characters!");
+      form.password1.focus();
+      return false;
+    }
+
+    return true;
+  }
+
+  alert("Check your password!");
+  return false;
+}
+
+</script>
+
+<form method="post" onsubmit="return checkForm(this);">
+  {% csrf_token %}
   <span class="smallertext">Username:</span><br>
-  <input type="text" value=""><br>
+  <input type="text" name="username"><br>
   <span class="smallertext">E-mail:</span><br>
-  <input type="email" value=""><br>
+  <input type="email" name="e_mail"><br>
   <span class="smallertext">Password:</span><br>
-  <input type="password" value=""><br>
+  <input type="password" name="password1"><br>
   <span class="smallertext">Repeat password:</span><br>
-  <input type="password" value=""><br>
+  <input type="password" name="password2"><br>
   <input type="submit" value="REGISTER">
 
 </form>
