@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<title>Login</title>
+<head>
+<link rel="stylesheet" type="text/css" href="../static/loginstyles.css">
+<ul>
+  <li><a href="main_page.html">HOME</a></li>
+  <li><a href="register.html">REGISTER</a></li>
+  <li><a href="lol">CATEGORIES</a></li>
+  <li><a href="juu">ABOUT</a></li>
+</ul>
+</head>
+<body background="background.jpg">
+  <div class="text">LOGIN AS AN EXISTING USER</div>
+
+  <form method="post">{% csrf_token %}
+    <span class="smallertext">Username:</span><br>
+    <input type="text" value=""><br>
+    <span class="smallertext">Password:</span><br>
+    <input type="password" value=""><br>
+    <input type="submit" value="LOGIN">
+
+  </form>
+
+</BODY>
+</HTML>

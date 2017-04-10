@@ -1,21 +1,29 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<title>Register</title>
+<head>
+<link rel="stylesheet" type="text/css" href="../static/loginstyles.css">
+<ul>
+  <li><a href="main_page.html">HOME</a></li>
+  <li><a href="login.html">LOGIN</a></li>
+  <li><a href="categories.html">CATEGORIES</a></li>
+  <li><a href="about.html">ABOUT</a></li>
+</ul>
+</head>
+<body background="background.jpg">
 
-{% block content %}
-  <h2>Sign up</h2>
-  <form method="post">
-    {% csrf_token %}
-    {% for field in form %}
-      <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-        {% if field.help_text %}
-          <small style="color: grey">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-        {% endfor %}
-      </p>
-    {% endfor %}
-    <button type="submit">Sign up</button>
-  </form>
-{% endblock %}
+<div class="text">CREATE AN ACCOUNT</DIV>
+
+<form method="post">{% csrf_token %}
+  <span class="smallertext">Username:</span><br>
+  <input type="text" value=""><br>
+  <span class="smallertext">Password:</span><br>
+  <input type="password" value=""><br>
+  <span class="smallertext">Repeat password:</span><br>
+  <input type="password" value=""><br>
+  <input type="submit" value="REGISTER">
+
+</form>
+
+</BODY>
+</HTML>
