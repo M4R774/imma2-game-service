@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<head>
+<script>
+
+window.addEventListener("message", function(evt) {
+			// If LOAD, update the score
+			if(evt.data.messageType === "SCORE") {
+				alert("score submitted: " + evt.data.score);
+
+			}
+      else if (evt.data.messageType === "SAVE") {
+        alert("saved game with score: " + evt.data.gameState.score);
+      }
+      else if (evt.data.messageType === "SETTING") {
+        adjustIframe(evt.data.options.width, evt.data.options.height);
+        alert("settings requested: " + evt.data.options.height + "x" + evt.data.options.width);
+      }
+
+		});
+
+function changeMessage(msg) {
+	document.getElementById("asd").innerHTML = msg;
+
+}
+function adjustIframe(x, y) {
+  document.getElementById("freimi").width = x;
+  document.getElementById("freimi").height = y;
+}
+
+</script>
+</head>
+<html>
+<div id="asd">jotakin</div>
+<iframe id="freimi" src="https://sakarinvillapaitapeli2.herokuapp.com/sakarinvillapaitapeli2.html" height=800 width=90% name="iframe1"></iframe>
+</html>
