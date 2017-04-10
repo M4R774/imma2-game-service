@@ -3,21 +3,20 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 
 def signup(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('home')
-        else:
-            form = UserCreationForm()
-            return render(request, 'register.html', {'form': form})
+	if request.method == 'POST':
+		form = UserCreationForm(request.POST)
+		if form.is_valid():
+			form.save()
+			username = form.cleaned_data.get('username')
+			raw_password = form.cleaned_data.get('password1')
+			user = authenticate(username=username, password=raw_password)
+			login(request, user)
+			return redirect('home')
+		else:
+			form = UserCreationForm()
+			return render(request, 'register.html', {'form': form})
 
 def mainPage(request):
-
 	return render(request, 'main_page.html')
 
 def registerUser(request):
@@ -80,42 +79,32 @@ def registerUser(request):
 
 def loginUser(request):
 
-	# Like before, obtain the context for the user's request.
+
 	context = RequestContext(request)
-	# If the request is a HTTP POST, try to pull out the relevant information.
+
 	if request.method == 'POST':
-		# Gather the username and password provided by the user.
-		# This information is obtained from the login form.
 		username = request.POST['username']
 		password = request.POST['password']
-		# Use Django's machinery to attempt to see if the username/password
-		# combination is valid - a User object is returned if it is.
 		user = authenticate(username=username, password=password)
-		# If we have a User object, the details are correct.
-		# If None (Python's way of representing the absence of a value), no user
-		# with matching credentials was found.
-        if user:
-            # Is the account active? It could have been disabled.
-            if user.is_active:
-                # If the account is valid and active, we can log the user in.
-                # We'll send the user back to the homepage.
-                login(request, user)
-                return HttpResponseRedirect('/main_page_logged/')
-            else:
-                # An inactive account was used - no logging in!
-                return render(request, 'message.html',
-                {
-                'title': "Account not activated",
-                'message': "Please check your email and activate your account before logging in."
-                })
-        else:
-            # Bad login details were provided. So we can't log the user in.
-            print ("Invalid login details: {0}, {1}".format(username, password))
-            return render(request, 'message.html',
-            {
-            'title': "Invalid login details supplied",
-            'message': "Please check your login information and try again."
-            })
+
+		if user:
+			if user.is_active:
+				login(request, user)
+				return HttpResponseRedirect('/main_page_logged/')
+			else:
+				return render(request, 'message.html',
+				{
+				'title': "Account not activated",
+				'message': "Please check your email and activate your account before logging in."
+				})
+		else:
+
+			print ("Invalid login details: {0}, {1}".format(username, password))
+			return render(request, 'message.html',
+			{
+			'title': "Invalid login details supplied",
+			'message': "Please check your login information and try again."
+			})
 
 	# The request is not a HTTP POST, so display the login form.
 	# This scenario would most likely be a HTTP GET.
