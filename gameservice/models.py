@@ -9,8 +9,8 @@ class Game(models.Model):
     price = models.DecimalField(decimal_places=2)
     #highscores = models.ForeignKey(Highscore, on_delete=models.CASCADE, related_name="highscores")
     sales = models.PositiveIntegerField()
-    developer = models.ForeignKey(Developer, related_name="games", blank=True)
-    players = models.ManyToManyField(Player, related_name="games_owned", blank=True)
+    developer = models.ForeignKey(User, related_name="games", blank=True)
+    players = models.ManyToManyField(User, related_name="games_owned", blank=True)
     date_published = models.DateTimeField(auto_now_add=True)
 
 class Player(models.Model):
@@ -24,6 +24,6 @@ class Developer(models.Model):
 
 
 class Highscore(models.Model):
-    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    player = models.ForeignKey(User, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     score = models.PositiveIntegerField()
