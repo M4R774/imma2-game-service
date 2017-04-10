@@ -4,19 +4,21 @@
 <head>
 <link rel="stylesheet" type="text/css" href="../static/loginstyles.css">
 <ul>
-  <li><a href="main_page.html">HOME</a></li>
-  <li><a href="login.html">LOGIN</a></li>
-  <li><a href="categories.html">CATEGORIES</a></li>
-  <li><a href="about.html">ABOUT</a></li>
+  <li><a href="main_page">HOME</a></li>
+  <li><a href="login">LOGIN</a></li>
+  <li><a href="categories">CATEGORIES</a></li>
+  <li><a href="about">ABOUT</a></li>
 </ul>
 </head>
 <body>
 
 <div class="text">CREATE AN ACCOUNT</DIV>
 
-<form method="post">{% csrf_token %}
+<form method="post">
   <span class="smallertext">Username:</span><br>
   <input type="text" value=""><br>
+  <span class="smallertext">E-mail:</span><br>
+  <input type="email" value=""><br>
   <span class="smallertext">Password:</span><br>
   <input type="password" value=""><br>
   <span class="smallertext">Repeat password:</span><br>
