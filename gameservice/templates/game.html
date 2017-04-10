@@ -12,64 +12,73 @@
 </body>
 <script>
 
-var gs = {};
 
-window.addEventListener("message", function(evt) {
+	var gs = {};
 
-			// If LOAD, update the score
-			if(evt.data.messageType === "SCORE") {
+	window.addEventListener("message", function(evt) {
 
-				changemessage("score submitted: " + evt.data.score);
-			}
+				// If LOAD, update the score
+				if(evt.data.messageType === "SCORE") {
 
-      else if (evt.data.messageType === "SAVE") {
-				gs = evt.data.gameState;
-        changemessage("saved game with score: " + evt.data.gameState.score);
-      }
+					changemessage("score submitted: " + evt.data.score);
+				}
 
-      else if (evt.data.messageType === "LOAD_REQUEST") {
-				respond();
+	      else if (evt.data.messageType === "SAVE") {
+					gs = evt.data.gameState;
+	        changemessage("saved game with score: " + evt.data.gameState.score);
+	      }
 
-      }
+	      else if (evt.data.messageType === "LOAD_REQUEST") {
+					respond();
 
-      else if (evt.data.messageType === "SETTING") {
-        adjustIframe(evt.data.options.width, evt.data.options.height);
-        changemessage("settings requested: " + evt.data.options.height + "x" + evt.data.options.width);
-      }
+	      }
 
-		});
+	      else if (evt.data.messageType === "SETTING") {
+	        adjustIframe(evt.data.options.width, evt.data.options.height);
+	        changemessage("settings requested: " + evt.data.options.height + "x" + evt.data.options.width);
+	      }
 
-function changeMessage(msg) {
-	document.getElementById("asd").innerHTML = msg;
+			});
 
-}
-function adjustIframe(x, y) {
-  document.getElementById("freimi").width = x;
-  document.getElementById("freimi").height = y;
-}
+	function changeMessage(msg) {
+		document.getElementById("asd").innerHTML = msg;
 
-function respond() {
-	var msg = {
-					"messageType": "LOAD",
-					"gameState": gs
-				};
+	}
+	function adjustIframe(x, y) {
+	  document.getElementById("freimi").width = x;
+	  document.getElementById("freimi").height = y;
+	}
 
-	changemessage("Responded with load game with score of: " + gs.score );
-	var iframe = document.getElementById("freimi")
-	var x = iframe.contentWindow;
-	x.postMessage(msg, '*');
-}
+	function respond() {
+		if ( gs == {} ) {
+			var msg = {
+							"messageType": "ERROR",
 
-function changetarget() {
-	var tekstikentta = document.getElementById("joku");
-	var newpath = tekstikentta.value;
-	var iframe = document.getElementById("freimi");
-	iframe.src = newpath;
-}
+						};
+		}
+		else {
+			var msg = {
+							"messageType": "ERROR",
+							"gameState": gs
+						};
+		}
 
-function changemessage(msg) {
-	var elem = document.getElementById("tekstit");
-	elem.innerHTML += msg +"<br>";
-}
 
+		changemessage("Responded with load game with score of: " + gs.score );
+		var iframe = document.getElementById("freimi")
+		var x = iframe.contentWindow;
+		x.postMessage(msg, '*');
+	}
+
+	function changetarget() {
+		var tekstikentta = document.getElementById("joku");
+		var newpath = tekstikentta.value;
+		var iframe = document.getElementById("freimi");
+		iframe.src = newpath;
+	}
+
+	function changemessage(msg) {
+		var elem = document.getElementById("tekstit");
+		elem.innerHTML += msg +"<br>";
+	}
 </script>
