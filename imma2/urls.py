@@ -29,6 +29,6 @@ from gameservice import models
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^signup/$', views.signup, name='signup'),
-    url(r'^login/$', views.loginUser, name='login')
-    url(r'^$', views.mainPage, name='mainpage')
+    url(r'^login/$', views.loginUser, name='login'),
+    url(r'^$', views.mainPage, name='mainpage'),
 ]
