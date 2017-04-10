@@ -17,14 +17,16 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
 admin.autodiscover()
-from gameservice import views
 from django.conf.urls import url
-from . import views as core_views
+
+from gameservice import views
+from gameservice import models
+
+#from . import views as core_views
 #from gameservice import usermanagement
-#from gameservice import models
 #from django.views.generic import TemplateView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^signup/$', core_views.signup, name='signup'),
+    url(r'^signup/$', views.signup, name='signup'),
 ]
