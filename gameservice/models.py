@@ -17,7 +17,7 @@ class Player(models.Model):
     user = models.OneToOneField(User, primary_key=True)
 
     def __str__(self):
-        return str(self.user)
+        return str(self.user.username)
 
 class Developer(models.Model):
     user = models.OneToOneField(User, primary_key=True)
