@@ -1,20 +1,31 @@
 <!DOCTYPE html>
 <head>
+
+</head>
+<body>
+<button id="button1", onclick=changetarget()>Vaihda iFramen target</button> <br><br>
+<input id="joku" type="text" name="urlpath" style="width: 400px;"> paste URL</input> <br><br>
+<iframe id="freimi" src="C:/Users/saempylae/Koulu/seitti/seitti2017/example-game/example_game.html" height=800 width=90% name="iframe1"></iframe>
+</body>
 <script>
 
+var gs = {};
+
 window.addEventListener("message", function(evt) {
+
 			// If LOAD, update the score
 			if(evt.data.messageType === "SCORE") {
 				alert("score submitted: " + evt.data.score);
 			}
 
       else if (evt.data.messageType === "SAVE") {
-
+				gs = evt.data.gameState;
         alert("saved game with score: " + evt.data.gameState.score);
       }
 
       else if (evt.data.messageType === "LOAD_REQUEST") {
         alert("load request, responding");
+				respond();
 
       }
 
@@ -34,17 +45,22 @@ function adjustIframe(x, y) {
   document.getElementById("freimi").height = y;
 }
 
-// function respond() {
-//   var message = {
-//     "messageType" = "LOAD",
-//     "gameState" = gamestate
-//   };
-//   window.postMessage(message, "*");
-// }
-// https://rawgit.com/anuemiliat/wsd-group-666-games/master/games/reactit.html
-// https://sakarinvillapaitapeli2.herokuapp.com/sakarinvillapaitapeli2.html
+function respond() {
+	var msg = {
+					"messageType": "LOAD",
+					"gameState": gs
+				};
+
+	var iframe = document.getElementById("freimi")
+	var x = iframe.contentWindow;
+	x.postMessage(msg, '*');
+}
+
+function changetarget() {
+	var tekstikentta = document.getElementById("joku");
+	var newpath = tekstikentta.value;
+	var iframe = document.getElementById("freimi");
+	iframe.src = newpath;
+}
+
 </script>
-</head>
-<html>
-<iframe id="freimi" src="https://sakarinvillapaitapeli2.herokuapp.com/sakarinvillapaitapeli2.html" height=800 width=90% name="iframe1"></iframe>
-</html>
