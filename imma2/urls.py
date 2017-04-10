@@ -29,4 +29,5 @@ from gameservice import models
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^signup/$', views.signup, name='signup'),
+    url(r'^)
 ]
