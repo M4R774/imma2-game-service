@@ -21,8 +21,14 @@ from django.template import RequestContext
 #
 # 	return render(request, 'register.html', {'form': form})
 
+
 def mainPage(request):
     return render(request, 'main_page.html')
+
+
+def about(request):
+    return render(request, 'about.html')
+
 
 def registerUser(request):
 
