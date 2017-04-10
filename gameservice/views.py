@@ -2,22 +2,22 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 
-def signup(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('home')
-    else:
-        form = UserCreationForm()
-    return render(request, 'register.html', {'form': form})
+# def signup(request):
+# 	if request.method == 'POST':
+# 		form = UserCreationForm(request.POST)
+# 		if form.is_valid():
+# 			form.save()
+# 			username = form.cleaned_data.get('username')
+# 			raw_password = form.cleaned_data.get('password1')
+# 			user = authenticate(username=username, password=raw_password)
+# 			login(request, user)
+# 			return redirect('home')
+# 		else:
+# 			form = UserCreationForm()
+#
+# 	return render(request, 'register.html', {'form': form})
 
 def mainPage(request):
-
 	return render(request, 'main_page.html')
 
 def registerUser(request):
@@ -25,7 +25,7 @@ def registerUser(request):
 	registered = False
 	if request.method == 'POST':
 		user_form = UserForm(data=request.POST)
-		profile_form = UserProfileForm(data=request.POST)
+		# profile_form = UserProfileForm(data=request.POST)
 		if user_form.is_valid() and profile_form.is_valid():
 			# Save the user's form data to the database.
 			user = user_form.save()
@@ -39,7 +39,7 @@ def registerUser(request):
 			# Now sort out the UserProfile instance.
 			# Since we need to set the user attribute ourselves, we set commit=False.
 			# This delays saving the model until we're ready to avoid integrity problems.
-			profile = profile_form.save(commit=False)
+			# profile = profile_form.save(commit=False)
 			profile.user = user
 			# Did the user provide a profile picture?
 			# If so, we need to get it from the input form and put it in the UserProfile model.
@@ -58,14 +58,14 @@ def registerUser(request):
 	# These forms will be blank, ready for user input.
 	else:
 		user_form = UserForm()
-		profile_form = UserProfileForm()
+		# profile_form = UserProfileForm()
 	# Render the template depending on the context.
 	if not registered:
 		return render(request,
 			'register.html',
 			{
 				'user_form': user_form,
-				'profile_form': profile_form,
+				# 'profile_form': profile_form,
 			}
 		)
 
@@ -80,43 +80,32 @@ def registerUser(request):
 
 def loginUser(request):
 
-	# Like before, obtain the context for the user's request.
 	context = RequestContext(request)
-	# If the request is a HTTP POST, try to pull out the relevant information.
+
 	if request.method == 'POST':
-		# Gather the username and password provided by the user.
-		# This information is obtained from the login form.
 		username = request.POST['username']
 		password = request.POST['password']
-		# Use Django's machinery to attempt to see if the username/password
-		# combination is valid - a User object is returned if it is.
 		user = authenticate(username=username, password=password)
-		# If we have a User object, the details are correct.
-		# If None (Python's way of representing the absence of a value), no user
-		# with matching credentials was found.
-		if user:
-            return HttpResponseRedirect('/main_page_logged/')
-			# Is the account active? It could have been disabled.
-			# if user.is_active:
-			# 	# If the account is valid and active, we can log the user in.
-			# 	# We'll send the user back to the homepage.
-			# 	login(request, user)
 
-			# else:
-			# 	# An inactive account was used - no logging in!
-			# 	return render(request, 'message.html',
-			# 		{
-			# 			'title': "Account not activated",
-			# 			'message': "Please check your email and activate your account before logging in."
-			# 		})
+		if user:
+			if user.is_active:
+				login(request, user)
+				return HttpResponseRedirect('/main_page_logged/')
+			else:
+				return render(request, 'message.html',
+				{
+				'title': "Account not activated",
+				'message': "Please check your email and activate your account before logging in."
+				})
 		else:
-			# Bad login details were provided. So we can't log the user in.
+
 			print ("Invalid login details: {0}, {1}".format(username, password))
 			return render(request, 'message.html',
-				{
-					'title': "Invalid login details supplied",
-					'message': "Please check your login information and try again."
-				})
+			{
+			'title': "Invalid login details supplied",
+			'message': "Please check your login information and try again."
+			})
+
 	# The request is not a HTTP POST, so display the login form.
 	# This scenario would most likely be a HTTP GET.
 	else:
