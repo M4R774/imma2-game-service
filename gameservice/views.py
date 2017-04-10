@@ -116,4 +116,4 @@ def loginUser(request):
 			# If the user is authenticated, we'll sent the user to homepage
 			if request.user.is_authenticated():
 				return HttpResponseRedirect('/main_page_logged/')
-			return render_to_response('login.html', {}, context)
+			return render_to_response('login.html', {}, context_instance=RequestContext(request))
