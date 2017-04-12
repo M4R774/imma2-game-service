@@ -1,27 +1,20 @@
 <!DOCTYPE html>
 <html>
-<title>Login</title>
 <head>
-<link rel="stylesheet" type="text/css" href="../static/loginstyles.css">
-<ul>
-  <li><a href="main_page">HOME</a></li>
-  <li><a href="register">REGISTER</a></li>
-  <li><a href="categories">CATEGORIES</a></li>
-  <li><a href="about">ABOUT</a></li>
-</ul>
+	<link rel="stylesheet" type="text/css" href="../static/loginstyles.css">
+	<title>Login</title>
 </head>
 <body background="background.jpg">
-  <div class="text">LOGIN AS AN EXISTING USER</div>
+	{% include "header.html" %}
+	<div class="text">LOGIN AS AN EXISTING USER</div>
 
-  <form method="post">
-	{% csrf_token %}
-    <span class="smallertext">Username:</span><br>
-    <input type="text" value=""><br>
-    <span class="smallertext">Password:</span><br>
-    <input type="password" value=""><br>
-    <input type="submit" value="LOGIN">
-
-  </form>
-
+	<form method="post">
+		{% csrf_token %}
+		<span class="smallertext">Username:</span><br>
+		<input type="text" value=""><br>
+		<span class="smallertext">Password:</span><br>
+		<input type="password" value=""><br>
+		<input type="submit" value="LOGIN">
+	</form>
 </BODY>
 </HTML>
