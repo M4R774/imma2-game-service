@@ -36,5 +36,7 @@ urlpatterns = [
     url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
     url(r'^about/$', views.about, name='about'),
+    url(r'^addgame/$', views.addgame, name='addgame'),
     url(r'^$', views.mainPage, name='mainpage'),
+
 ]

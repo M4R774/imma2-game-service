@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from .forms import SignUpForm
+from .forms import SignUpForm, AddGameForm
 from django.template import RequestContext
 
 
@@ -14,6 +14,18 @@ def mainPage(request):
 def about(request):
     return render(request, 'about.html')
 
+def addgame(request):
+    if request.method == "POST":
+        form = AddGameForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = AddGameForm()
+    return render(request, 'addgame.html', {'form': form})
 
 def signup(request):
     if request.method == 'POST':
