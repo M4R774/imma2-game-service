@@ -27,6 +27,8 @@ SECRET_KEY = "wehppv(vh($)42_1@heb0khwiq!a@j=7b86hw+)!ltq$2y!u#_"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+LOGIN_REDIRECT_URL = 'mainpage'
+
 ALLOWED_HOSTS = ['localhost', '.herokuapp.com']
 
 # Application definition
