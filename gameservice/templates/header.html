@@ -1,12 +1,18 @@
-{% block content %}
+{% block header %}
+
 <header>
 	<nav>
 		<ul id="MainNavigation">
 		  <li><a href="{% url 'mainpage' %}">HOME</a></li>
-		  <li><a href="{% url 'login' %}">LOGIN</a></li>
-		  <li><a href="{% url 'signup' %}">REGISTER</a></li>
-		  <li><a href="{% url 'mainpage' %}">CATEGORIES</a></li>
-		  <li><a href="{% url 'about' %}">ABOUT</a></li>
+		  
+			{% if user.is_authenticated %}
+				<li><a href="{% url 'logout' %}">LOGOUT</a></li>
+			{% else %}
+				<li><a href="{% url 'login' %}">LOGIN</a></li>
+				<li><a href="{% url 'signup' %}">REGISTER</a></li>
+			{% endif %}
+			<li><a href="{% url 'mainpage' %}">CATEGORIES</a></li>
+			<li><a href="{% url 'about' %}">ABOUT</a></li>
 		</ul>
 	</nav>
 </header>

@@ -1,29 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<link rel="stylesheet" type="text/css" href="../static/loginstyles.css">
-	<title>Login</title>
-</head>
-<body background="background.jpg">
-	{% include "header.html" %}
-	<div class="text">LOGIN AS AN EXISTING USER</div>
+{% extends 'base.html' %}
 
-	<form method="post">
-		{% csrf_token %}
-		<span class="smallertext">Username:</span><br>
-		<input type="text" value=""><br>
-		<span class="smallertext">Password:</span><br>
-		<input type="password" value=""><br>
-		<input type="submit" value="LOGIN">
-	</form>
-	
-	{% block content %}
-	  <h2>The login form below works correctly</h2>
-	  <form method="post">
-		{% csrf_token %}
-		{{ form.as_p }}
-		<button type="submit">Login</button>
-	  </form>
-	{% endblock %}
-</BODY>
-</HTML>
+{% block title %}Login{% endblock %}
+
+{% block content %}
+  <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
+{% endblock %}

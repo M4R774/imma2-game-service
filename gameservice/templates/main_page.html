@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>About Imma2</title>
-	<link rel="stylesheet" type="text/css" href="../static/styles.css">
-</head>
+{% extends 'base.html' %}
 
-<body>
-  {% include "header.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
   <h1 id="title">WELCOME TO IMMA</h1>
   <p>this is text that will say something or not somewhere in the future</p>
   <div id="gamesbox">THIS IS WHERE THE GAMES WILL BE</div>
   <div id="leftbox">THIS IS ANOTHER BOX</div>
-
-
-</body>
+{% endblock %}
