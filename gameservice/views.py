@@ -2,9 +2,14 @@ from django.shortcuts import render, render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, AddGameForm
 from django.template import RequestContext
+
+import time
+import hashlib
+from datetime import datetime
 
 
 def mainPage(request):
@@ -139,3 +144,57 @@ def loginUser(request):
             if request.user.is_authenticated():
                 return HttpResponseRedirect('/main_page_logged/')
             return render_to_response('login.html', {}, context)
+
+
+@login_required
+def buyGame(request, gameid):
+
+    context = RequestContext(request)
+    user = context['user']
+    game = get_object_or_404(Game, id=gameid)
+    pid = user.username + "-" + str(game.id) + "-" + str(time.time())
+    amount = game.price
+    sid = "imma2isbest"
+    secret_key = "796c82d3e9b03deac64262b538ccea0f"
+
+    success_url = "/payment_succesfull/"
+    error_url = "/payment_failed/"
+    cancel_url = "/payment_cancelled/"
+
+    checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
+    m = md5(checksumstr.encode("ascii"))
+    checksum = m.hexdigest()
+    context['pid'] = pid
+    context['sid'] = sid
+    context['amount'] = amount
+    context['checksum'] = m
+    context['success_url'] = success_url
+    context['cancel_url'] = cancel_url
+    context['error_url'] = error_url
+    context['game'] = game
+    context['checksumstr'] = checksumstr
+    return render_to_response("buy.html", context)
+
+@login_required
+def payment_succesfull(request):
+
+    context = RequestContext(request)
+    pid = request.GET.get('pid', '').split("-")
+    game_id = int(pid[1])
+    buyer = pid[0]
+    game = get_object_or_404(Game, id=gameid)
+    user = context['user']
+
+    if str(user) != str(buyer):
+        pass
+    elif Game.objects.filter(gameid=game.id, ownerid=user.id).count() == 0:
+        pass
+
+
+@login_required
+def payment_failed(request):
+    pass
+
+@login_required
+def payment_cancelled(request):
+    pass
