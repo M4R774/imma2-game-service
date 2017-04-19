@@ -19,6 +19,9 @@ def mainPage(request):
 def about(request):
     return render(request, 'about.html')
 
+def profile(request):
+    return render(request, 'profile.html')
+
 def addgame(request):
     if request.method == "POST":
         form = AddGameForm(request.POST)
