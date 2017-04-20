@@ -229,6 +229,6 @@ def gamesInStore(request):
         ownedGameID.append(int(game.game.id))
 
     games = Game.objects.all()
-    games = games.exclude(id__in=OwnedGameID)
+    games = games.exclude(id__in=ownedGameID)
     context['GamesAvailable'] = games
-    return render_to_response('available_games.html', context)
+    return render(request, 'available_games.html', {'games':games} )

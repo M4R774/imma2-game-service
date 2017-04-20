@@ -1,12 +1,14 @@
 {% block content %}
 
-{% if not GamesAvailable %}
+{% if not games %}
 <p>No Games</p>
 
 {% else %}
 
-{% for g in GamesAvailable %}
-  <i><b>Name:</i></b> {{ g.title }}<br>
+{% for g in games %}
+  <i><b>Name:</i></b> {{ g.name }}
+  <br>
+
 {% endfor %}
 {% endif %}
 

@@ -29,7 +29,7 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-
+    url(r'^gamelist/', views.gamesInStore),
     url(r'^register/$', views.registerUser, name='register'),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
