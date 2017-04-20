@@ -4,10 +4,12 @@
 	<nav>
 		<ul id="MainNavigation">
 		  <li><a href="{% url 'mainpage' %}">HOME</a></li>
-		  
+
 			{% if user.is_authenticated %}
 				<li><a href="{% url 'logout' %}">LOGOUT</a></li>
-                <li><a href="{% url 'profile' %}">PROFILE</a></li>
+        <li><a href="{% url 'profile' %}">PROFILE</a></li>
+				Hello, {{request.user.username}}
+				<!-- Yläpuolella olevalle tarvitaan joku hieno muotoilu vielä  -->
 			{% else %}
 				<li><a href="{% url 'login' %}">LOGIN</a></li>
 				<li><a href="{% url 'signup' %}">REGISTER</a></li>

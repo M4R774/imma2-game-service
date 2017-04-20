@@ -32,12 +32,12 @@ urlpatterns = [
 
     url(r'^register/$', views.registerUser, name='register'),
     url(r'^signup/$', views.signup, name='signup'),
-    # url(r'^login/$', views.loginUser, name='login'),
     url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
     url(r'^about/$', views.about, name='about'),
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^addgame/$', views.addgame, name='addgame'),
+    url(r'^buygame/(?P<gameid>[0-99]+)/$', views.buyGame, name='buygame'),
     url(r'^$', views.mainPage, name='mainpage'),
 
 ]

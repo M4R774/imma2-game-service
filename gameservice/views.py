@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, AddGameForm
 from django.template import RequestContext
+from .models import *
 
 import time
 import hashlib
@@ -153,7 +154,7 @@ def loginUser(request):
 def buyGame(request, gameid):
 
     context = RequestContext(request)
-    user = context['user']
+    # user = context['user']
     game = get_object_or_404(Game, id=gameid)
     pid = user.username + "-" + str(game.id) + "-" + str(time.time())
     amount = game.price
@@ -189,15 +190,37 @@ def payment_succesfull(request):
     user = context['user']
 
     if str(user) != str(buyer):
+        # trying to use false buy link, what to do
         pass
-    elif Game.objects.filter(gameid=game.id, ownerid=user.id).count() == 0:
+    elif Game.objects.filter(gameid=game.id, players=user.id).count() == 0:
+        boughtgame = Game(gameid=game.id, players=user.id)
+        boughtgame.save()
+    else:
+        # game already owned, what to do
         pass
 
 
 @login_required
 def payment_failed(request):
+    # payment failed, what to do
     pass
 
 @login_required
 def payment_cancelled(request):
+    # payment cancelled, what to do
     pass
+
+@login_required
+def gamesInStore(request):
+    context = RequestContext(request)
+    ownedGames = Game.Objects.filter(players=request.user)
+    context['UserGames'] = ownedGames
+
+    ownedGameID = []
+    for game in ownedGames:
+        ownedGameID.append(int(game.game.id))
+
+    gamesToBuy = Game.Objects.all()
+    games = games.exclude(id__in=OwnedGameID)
+    context['GamesAvailable'] = games
+    return render_to_response('available_games.html', context)
