@@ -1,7 +1,13 @@
 {% block content %}
 
-{% for g in gamesInStore %}
-  <i><b>Name:</i></b> {{ g.name }}<br>
+{% if not GamesAvailable %}
+<p>No Games</p>
+
+{% else %}
+
+{% for g in GamesAvailable %}
+  <i><b>Name:</i></b> {{ g.title }}<br>
 {% endfor %}
+{% endif %}
 
 {% endblock %}

@@ -221,14 +221,14 @@ def payment_cancelled(request):
 @login_required
 def gamesInStore(request):
     context = RequestContext(request)
-    ownedGames = Game.Objects.filter(players=request.user)
+    ownedGames = Game.objects.filter(players=request.user)
     context['UserGames'] = ownedGames
 
     ownedGameID = []
     for game in ownedGames:
         ownedGameID.append(int(game.game.id))
 
-    gamesToBuy = Game.Objects.all()
+    games = Game.objects.all()
     games = games.exclude(id__in=OwnedGameID)
     context['GamesAvailable'] = games
     return render_to_response('available_games.html', context)
