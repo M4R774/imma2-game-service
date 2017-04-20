@@ -8,6 +8,9 @@ from .forms import SignUpForm, AddGameForm
 from django.template import RequestContext
 from .models import *
 from django.utils import timezone
+from django.core.signing import Signer
+
+from django.core.mail import send_mail
 
 import time
 import hashlib
@@ -44,19 +47,44 @@ def addgame(request):
     return render(request, 'addgame.html', {'form': form})
 
 def signup(request):
+
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('mainpage')
+            user.is_active = False
+            user.save()
+            signer = Signer()
+            signed_value = signer.sign(user.pk)
+            send_mail('Confirm registration to imma',
+                      'Go to this URL to confirm your account: '
+                      +'http://'+request.get_host()+'/signup_confirmed/'+str(signed_value),
+                      'localhost',[user.email], fail_silently=False)
+
+            confirmation_link = 'http://'+request.get_host()+'/signup_confirmed/'+str(signed_value)
+            return render(request, 'confirm.html', {'confirmation_link' : confirmation_link})
+
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
+def signup_confirmed(request, signed_value):
+    """
+    Activates a user when they open this view (which they received by mail).
+    """
+    try:
+        signer = Signer()
+        user_pk = signer.unsign(signed_value)
+        user = User.objects.get(pk=user_pk)
+        user.is_active = True
+        user.save()
+        return render(request, 'signup_confirmed.html')
+    except:
+        return HttpResponseRedirect("/denied")
 
 def registerUser(request):
 

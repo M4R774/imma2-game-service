@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^gamelist/', views.gamesInStore),
     url(r'^register/$', views.registerUser, name='register'),
     url(r'^signup/$', views.signup, name='signup'),
+    url(r'^signup_confirmed/(\S+)$', views.signup_confirmed),
     url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
     url(r'^about/$', views.about, name='about'),
