@@ -1,0 +1,21 @@
+{% load staticfiles %}
+{% block title %}Buy Game{% endblock %}
+{% block content %}
+<form id="buyform" action="https://simplepayments.herokuapp.com/pay/" method="POST">
+  <input  name="pid" value={{pid}} /><br>
+  <input  name="sid" value={{sid}} /><br>
+
+  <input  name="success_url" value={{success_url}} /><br>
+  <input  name="cancel_url" value={{cancel_url}} /><br>
+  <input  name="error_url" value={{error_url}} /><br>
+
+  <input  name="checksum" value={{checksum}} /><br>
+  <input  name="amount" value={{amount}} /><br>
+
+  <!-- <input  name="checksumstr" value={{checksumstr}} </input> -->
+  <input type="submit" value="Pay {{game.price}} euros"></input>
+</form>
+
+  <!-- <button id="buybutton" type="submit" class="save btn btn-default">BUY</button> -->
+
+{% endblock %}

@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from .forms import SignUpForm, AddGameForm
 from django.template import RequestContext
 from .models import *
+from django.utils import timezone
 
 import time
 import hashlib
@@ -24,14 +25,17 @@ def profile(request):
     return render(request, 'profile.html')
 
 def addgame(request):
+
+    context = RequestContext(request)
+
     if request.method == "POST":
         form = AddGameForm(request.POST)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.published_date = timezone.now()
-            post.save()
-            return redirect('post_detail', pk=post.pk)
+            newgame = form.save(commit=False)
+            newgame.author = request.user
+            newgame.published_date = timezone.now()
+            newgame.save()
+            return redirect('post_detail', pk=newgame.pk)
     else:
         form = AddGameForm()
     return render(request, 'addgame.html', {'form': form})
@@ -154,24 +158,25 @@ def loginUser(request):
 def buyGame(request, gameid):
 
     context = RequestContext(request)
-    # user = context['user']
+    user = request.user
     game = get_object_or_404(Game, id=gameid)
-    pid = user.username + "-" + str(game.id) + "-" + str(time.time())
+    pid = user.username
+    # pid = user.username + "-" + str(game.id) + "-" + str(time.time())
     amount = game.price
     sid = "imma2isbest"
     secret_key = "796c82d3e9b03deac64262b538ccea0f"
 
-    success_url = "/payment_succesfull/"
-    error_url = "/payment_failed/"
-    cancel_url = "/payment_cancelled/"
+    success_url = "http://localhost:5000/"
+    error_url = "http://localhost:5000/"
+    cancel_url = "http://localhost:5000/"
 
     checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
-    m = md5(checksumstr.encode("ascii"))
+    m = hashlib.md5(checksumstr.encode("ascii"))
     checksum = m.hexdigest()
     context['pid'] = pid
     context['sid'] = sid
     context['amount'] = amount
-    context['checksum'] = m
+    context['checksum'] = checksum
     context['success_url'] = success_url
     context['cancel_url'] = cancel_url
     context['error_url'] = error_url

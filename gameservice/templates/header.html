@@ -8,7 +8,7 @@
 			{% if user.is_authenticated %}
 				<li><a href="{% url 'logout' %}">LOGOUT</a></li>
         <li><a href="{% url 'profile' %}">PROFILE</a></li>
-				Hello, {{request.user.username}}
+				Hello, {{request.user}}
 				<!-- Yläpuolella olevalle tarvitaan joku hieno muotoilu vielä  -->
 			{% else %}
 				<li><a href="{% url 'login' %}">LOGIN</a></li>

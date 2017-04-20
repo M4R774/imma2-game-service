@@ -8,9 +8,9 @@ class Game(models.Model):
     url = models.URLField(max_length = 255, unique=True)
     price = models.DecimalField(decimal_places=2, max_digits=10)
     #highscores = models.ForeignKey(Highscore, on_delete=models.CASCADE, related_name="highscores")
-    sales = models.PositiveIntegerField()
-    developer = models.ForeignKey(User, related_name="games", blank=True)
-    players = models.ManyToManyField(User, related_name="games_owned", blank=True)
+    sales = models.PositiveIntegerField(default=0)
+    developer = models.ForeignKey(User, related_name="games", null=True, blank=True)
+    players = models.ManyToManyField(User, related_name="games_owned", null=True, blank=True)
     date_published = models.DateTimeField(auto_now_add=True)
 
 class Player(models.Model):
