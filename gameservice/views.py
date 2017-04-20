@@ -17,12 +17,15 @@ from datetime import datetime
 def mainPage(request):
     return render(request, 'main_page.html')
 
-
 def about(request):
     return render(request, 'about.html')
 
 def profile(request):
     return render(request, 'profile.html')
+
+def game_detail(request, pk):
+    game = get_object_or_404(Game, pk=pk)
+    return render(request, 'game.html', {'game': game})
 
 def addgame(request):
 
@@ -35,7 +38,7 @@ def addgame(request):
             newgame.author = request.user
             newgame.published_date = timezone.now()
             newgame.save()
-            return redirect('post_detail', pk=newgame.pk)
+            return redirect('game_detail', pk=newgame.pk)
     else:
         form = AddGameForm()
     return render(request, 'addgame.html', {'form': form})

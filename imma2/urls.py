@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^about/$', views.about, name='about'),
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^addgame/$', views.addgame, name='addgame'),
+    url(r'^game/(?P<pk>[0-9]+)/$', views.game_detail, name='game_detail'),
     url(r'^buygame/(?P<gameid>[0-99]+)/$', views.buyGame, name='buygame'),
     url(r'^$', views.mainPage, name='mainpage'),
 
