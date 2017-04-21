@@ -29,17 +29,19 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^gamelist/', views.gamesInStore),
-    url(r'^register/$', views.registerUser, name='register'),
+    url(r'^gamelist/', views.gamesInStore, name="gamelist"),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^signup_confirmed/(\S+)$', views.signup_confirmed),
     url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
+    url(r'^payment_succesfull/$', views.payment_succesfull, name="payment_succesfull"),
+    url(r'^payment_failed/$', views.payment_failed, name="payment_failed"),
+    url(r'^payment_cancelled/$', views.payment_cancelled, name="payment_cancelled"),
     url(r'^about/$', views.about, name='about'),
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^addgame/$', views.addgame, name='addgame'),
     url(r'^game/(?P<pk>[0-9]+)/$', views.game_detail, name='game_detail'),
-    url(r'^buygame/(?P<gameid>[0-99]+)/$', views.buyGame, name='buygame'),
+    url(r'^buygame/(?P<game_id>[0-99]+)/$', views.buyGame, name='buygame'),
     url(r'^$', views.mainPage, name='mainpage'),
 
 ]

@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, AddGameForm
 from django.template import RequestContext
-from .models import *
+from .models import Game, Ownedgame, Player, Highscore
 from django.utils import timezone
 from django.core.signing import Signer
 
@@ -23,13 +23,16 @@ def mainPage(request):
 def about(request):
     return render(request, 'about.html')
 
+@login_required(login_url='/login/')
 def profile(request):
     return render(request, 'profile.html')
 
+@login_required(login_url='/login/')
 def game_detail(request, pk):
     game = get_object_or_404(Game, pk=pk)
     return render(request, 'game.html', {'game': game})
 
+@login_required(login_url='/login/')
 def addgame(request):
 
     context = RequestContext(request)
@@ -38,8 +41,8 @@ def addgame(request):
         form = AddGameForm(request.POST)
         if form.is_valid():
             newgame = form.save(commit=False)
-            newgame.author = request.user
-            newgame.published_date = timezone.now()
+            newgame.developer = request.user
+            newgame.date_published = timezone.now()
             newgame.save()
             return redirect('game_detail', pk=newgame.pk)
     else:
@@ -86,118 +89,19 @@ def signup_confirmed(request, signed_value):
     except:
         return HttpResponseRedirect("/denied")
 
-def registerUser(request):
 
-    registered = False
-    if request.method == 'POST':
-        user_form = UserForm(data=request.POST)
-        # profile_form = UserProfileForm(data=request.POST)
-        if user_form.is_valid() and profile_form.is_valid():
-            # Save the user's form data to the database.
-            user = user_form.save()
-            # Now we hash the password with the set_password method.
-            # Once hashed, we can update the user object.
-            user.set_password(user.password)
-            #KOMMENTOI POIS SEURAAVAT KAKSI RIVIÄ, JOS ET HALUA ERIKSEEN AKTIVOIDA ACCOUNTTIA!
-            # user.is_active = False
-            # sendConfirmEmail(user)
-            user.save()
-            # Now sort out the UserProfile instance.
-            # Since we need to set the user attribute ourselves, we set commit=False.
-            # This delays saving the model until we're ready to avoid integrity problems.
-            # profile = profile_form.save(commit=False)
-            profile.user = user
-            # Did the user provide a profile picture?
-            # If so, we need to get it from the input form and put it in the UserProfile model.
-            #if 'picture' in request.FILES:
-            #	profile.picture = request.FILES['picture']
-            # Now we save the UserProfile model instance.
-            profile.save()
-            # Update our variable to tell the template registration was successful.
-            registered = True
-        # Invalid form or forms - mistakes or something else?
-        # Print problems to the terminal.
-        # They'll also be shown to the user.
-        else:
-            print(user_form.errors)
-    # Not a HTTP POST, so we render our form using two ModelForm instances.
-    # These forms will be blank, ready for user input.
-    else:
-        user_form = UserForm()
-        # profile_form = UserProfileForm()
-    # Render the template depending on the context.
-    if not registered:
-        return render(request,
-            'register.html',
-            {
-                'user_form': user_form,
-                # 'profile_form': profile_form,
-            }
-        )
-
-    else:
-        return render(request,
-            'main_page.html',
-            {
-                'title': "Thank you for registering!",
-                'message': "ebin",
-            }
-        )
-
-def loginUser(request):
-
-    context = RequestContext(request)
-
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-
-        if user:
-            if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect('/main_page_logged/')
-            else:
-                return render(request, 'message.html',
-                {
-                'title': "Account not activated",
-                'message': "Please check your email and activate your account before logging in."
-                })
-        else:
-
-            print ("Invalid login details: {0}, {1}".format(username, password))
-            return render(request, 'message.html',
-            {
-            'title': "Invalid login details supplied",
-            'message': "Please check your login information and try again."
-            })
-
-    # The request is not a HTTP POST, so display the login form.
-    # This scenario would most likely be a HTTP GET.
-    else:
-        # No context variables to pass to the template system, hence the
-            # blank dictionary object...
-            context['request'] = request
-            context['user'] = request.user
-            # If the user is authenticated, we'll sent the user to homepage
-            if request.user.is_authenticated():
-                return HttpResponseRedirect('/main_page_logged/')
-            return render_to_response('login.html', {}, context)
-
-
-@login_required
-def buyGame(request, gameid):
+@login_required(login_url='/login/')
+def buyGame(request, game_id):
 
     context = RequestContext(request)
     user = request.user
-    game = get_object_or_404(Game, id=gameid)
-    pid = user.username
-    # pid = user.username + "-" + str(game.id) + "-" + str(time.time())
+    game = get_object_or_404(Game, id=game_id)
+    pid = user.username + "-" + str(game.id) + "-" + str(time.time())
     amount = game.price
     sid = "imma2isbest"
     secret_key = "796c82d3e9b03deac64262b538ccea0f"
 
-    success_url = "http://localhost:5000/"
+    success_url = "http://localhost:5000/payment_succesfull"
     error_url = "http://localhost:5000/"
     cancel_url = "http://localhost:5000/"
 
@@ -215,41 +119,53 @@ def buyGame(request, gameid):
     context['checksumstr'] = checksumstr
     return render_to_response("buy.html", context)
 
-@login_required
+@login_required(login_url='/login/')
 def payment_succesfull(request):
 
     context = RequestContext(request)
     pid = request.GET.get('pid', '').split("-")
-    game_id = int(pid[1])
+    gameid = int(pid[1])
     buyer = pid[0]
     game = get_object_or_404(Game, id=gameid)
-    user = context['user']
+    user = request.user
 
     if str(user) != str(buyer):
-        # trying to use false buy link, what to do
-        pass
-    elif Game.objects.filter(gameid=game.id, players=user.id).count() == 0:
-        boughtgame = Game(gameid=game.id, players=user.id)
+        text = "Not your link!"
+        url = "/"
+
+    elif Ownedgame.objects.filter(game_id=gameid, user_id=user.id).count() == 0:
+        boughtgame = Ownedgame(game_id=gameid, user_id=user.id)
+
         boughtgame.save()
+        title = "Payment succesful"
+        text = "Game added to your owned games"
+        url = "/gamelist"
+        linkText = "Go to gamelist"
+
     else:
-        # game already owned, what to do
-        pass
+        title = "Game already owned"
+        url = "/gamelist"
+        linkText = "Go to gamelist"
+
+    return render(request, "message.html",
+        {"title": title, "url": url, "text": text, "linkText": linkText}
+        )
 
 
-@login_required
+@login_required(login_url='/login/')
 def payment_failed(request):
     # payment failed, what to do
     pass
 
-@login_required
+@login_required(login_url='/login/')
 def payment_cancelled(request):
     # payment cancelled, what to do
     pass
 
-@login_required
+@login_required(login_url='/login/')
 def gamesInStore(request):
     context = RequestContext(request)
-    ownedGames = Game.objects.filter(players=request.user)
+    ownedGames = Ownedgame.objects.filter(user = request.user.id)
     context['UserGames'] = ownedGames
 
     ownedGameID = []
@@ -259,4 +175,4 @@ def gamesInStore(request):
     games = Game.objects.all()
     games = games.exclude(id__in=ownedGameID)
     context['GamesAvailable'] = games
-    return render(request, 'available_games.html', {'games':games} )
+    return render_to_response("available_games.html", context)
