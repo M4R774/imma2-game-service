@@ -30,7 +30,11 @@ def profile(request):
 @login_required(login_url='/login/')
 def game_detail(request, pk):
     game = get_object_or_404(Game, pk=pk)
-    return render(request, 'game.html', {'game': game})
+    if Ownedgame.objects.filter(game_id=pk, user_id=request.user.id).count() == 0:
+        return HttpResponseRedirect('/gamelist/')
+
+    else:
+        return render(request, 'game.html', {'game': game})
 
 @login_required(login_url='/login/')
 def addgame(request):
