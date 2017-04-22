@@ -31,7 +31,12 @@ def about(request):
 
 @login_required(login_url='/login/')
 def profile(request):
-    return render(request, 'profile.html')
+    dev = get_object_or_404(Player, pk = request.user)
+    if dev.developer:
+        devbool = True
+    else:
+        devbool = False
+    return render(request, 'profile.html', {'devbool': devbool})
 
 @login_required(login_url='/login/')
 def game_detail(request, pk):
@@ -46,19 +51,26 @@ def game_detail(request, pk):
 @login_required(login_url='/login/')
 def addgame(request):
 
-    context = RequestContext(request)
+    dev = get_object_or_404(Player, pk = request.user)
+    if dev.developer:
 
-    if request.method == "POST":
-        form = AddGameForm(request.POST)
-        if form.is_valid():
-            newgame = form.save(commit=False)
-            newgame.developer = request.user
-            newgame.date_published = timezone.now()
-            newgame.save()
-            return redirect('game_detail', pk=newgame.pk)
+        context = RequestContext(request)
+
+        if request.method == "POST":
+            form = AddGameForm(request.POST)
+            if form.is_valid():
+                newgame = form.save(commit=False)
+                newgame.developer = request.user
+                newgame.date_published = timezone.now()
+                newgame.save()
+                return redirect('game_detail', pk=newgame.pk)
+        else:
+            form = AddGameForm()
+        return render(request, 'addgame.html', {'form': form})
+
     else:
-        form = AddGameForm()
-    return render(request, 'addgame.html', {'form': form})
+
+        return HttpResponseRedirect('/')
 
 def signup(request):
 
@@ -66,13 +78,13 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            # if checked:
-            #     player = Player(user = user, developer=True)
-            #     player.save()
-            # else:
-            #     player = Player(user = user, developer=False)
-            #     player.save()
-            #
+            if form.cleaned_data["applyAsDeveloper"]:
+                player = Player(user = user, developer=True)
+                player.save()
+            else:
+                player = Player(user = user, developer=False)
+                player.save()
+
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
@@ -102,8 +114,6 @@ def signup_confirmed(request, signed_value):
         user_pk = signer.unsign(signed_value)
         user = User.objects.get(pk=user_pk)
         user.is_active = True
-        player = Player(user = user, developer=True)
-        player.save()
         user.save()
         return render(request, 'signup_confirmed.html')
     except:

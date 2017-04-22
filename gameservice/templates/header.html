@@ -6,6 +6,7 @@
 		{% if user.is_authenticated %}
 			<li><a href="{% url 'logout' %}">LOGOUT</a></li>
 			<li><a href="{% url 'profile' %}">PROFILE</a></li>
+			<li><a href="{% url 'library' %}">LIBRARY</a></li>
 			<li><span> Hello, {{request.user}} </span> </li>
 		<!-- Yläpuolella olevalle tarvitaan joku hieno muotoilu vielä  -->
 		{% else %}
