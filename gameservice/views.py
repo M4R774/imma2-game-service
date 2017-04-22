@@ -167,7 +167,7 @@ def payment_succesfull(request):
         url = "/gamelist"
         linkText = "Go to gamelist"
 
-    return render(request, "message.html",
+    return render(request, "game_bought.html",
         {"title": title, "url": url, "text": text, "linkText": linkText}
         )
 
