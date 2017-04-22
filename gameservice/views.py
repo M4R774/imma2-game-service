@@ -25,7 +25,7 @@ def mainPage(request):
     context = RequestContext(request)
     games = Game.objects.all()
     context['AllGames'] = games
-    return render_to_response('main_page.html', context)
+    return render(request, 'main_page.html', {'games': games})
 
 def about(request):
     return render(request, 'about.html')
