@@ -4,7 +4,25 @@
 
 {% block content %}
   <h1 id="title">WELCOME TO IMMA</h1>
-  <p>Hello</p>
-  <div id="gamesbox">asd </div>
-  <div id="leftbox">THIS IS ANOTHER BOX</div>
+	
+	
+	{% for g in GamesAvailable %}
+  <i><b>Name:</i></b> {{ g.name }}
+  <a href="{% url 'buygame' g.id %}">BUY</a>
+  <br>
+
+{% endfor %}
+  	<div class="container">
+		{% for game in AllGames %}
+			{% if forloop.first %}<div class="row">{% endif %}
+				<div class="col-xs-4">
+					<i><b>Name:</i></b> {{ game.name }}
+					<a href="{% url 'game_detail' game.id %}">PLAY</a>
+					<br>
+				</div>
+			{% if forloop.counter|divisibleby:3 %} </div><div class="row"> {% endif %}
+			{% if forloop.last %} </div> {% endif %}
+		{% endfor %}
+	</div>
+  
 {% endblock %}

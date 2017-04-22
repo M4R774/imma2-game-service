@@ -6,13 +6,12 @@
 		{% if user.is_authenticated %}
 			<li><a href="{% url 'logout' %}">LOGOUT</a></li>
 			<li><a href="{% url 'profile' %}">PROFILE</a></li>
-			<li> Hello, {{request.user}} </li>
+			<li><span> Hello, {{request.user}} </span> </li>
 		<!-- Yläpuolella olevalle tarvitaan joku hieno muotoilu vielä  -->
 		{% else %}
 			<li><a href="{% url 'login' %}">LOGIN</a></li>
 			<li><a href="{% url 'signup' %}">REGISTER</a></li>
 		{% endif %}
-		<li><a href="{% url 'mainpage' %}">CATEGORIES</a></li>
 		<li><a href="{% url 'about' %}">ABOUT</a></li>
 	</ul>
 </nav>
