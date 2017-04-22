@@ -134,7 +134,7 @@ def buyGame(request, game_id):
     context['error_url'] = error_url
     context['game'] = game
     context['checksumstr'] = checksumstr
-    return render_to_response("buy.html", context)
+    return render(request, "buy.html", {'context': context})
 
 @login_required(login_url='/login/')
 def payment_succesfull(request):
@@ -167,7 +167,7 @@ def payment_succesfull(request):
 
 
     return render(request, "game_bought.html",
-        {"title": title, "text": text, "linkText": linkText}
+        {"title": title, "text": text}
         )
 
 
@@ -196,4 +196,8 @@ def gamesInStore(request):
     context['AllGames'] = games
     games = games.exclude(id__in=ownedGameID)
     context['GamesAvailable'] = games
-    return render_to_response("available_games.html", context)
+    return render(request, "available_games.html", {'context': context})
+
+@login_required(login_url='/login')
+def developerView(request):
+    pass
