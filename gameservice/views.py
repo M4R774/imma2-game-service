@@ -43,7 +43,7 @@ def game_detail(request, pk):
     else:
         return render(request, 'game.html', {'game': game})
 
-@user_passes_test(developer_check)
+
 @login_required(login_url='/login/')
 def addgame(request):
 
