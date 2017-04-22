@@ -22,7 +22,10 @@ def developer_check(user):
     return tosi
 
 def mainPage(request):
-    return render(request, 'main_page.html')
+    context = RequestContext(request)
+    games = Game.objects.all()
+    context['AllGames'] = games
+    return render_to_response('main_page.html', context)
 
 def about(request):
     return render(request, 'about.html')
