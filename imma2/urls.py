@@ -29,7 +29,7 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^gamelist/', views.gamesInStore, name="gamelist"),
+    url(r'^shop/', views.gamesInStore, name="shop"),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^signup_confirmed/(\S+)$', views.signup_confirmed),
     url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
@@ -42,6 +42,7 @@ urlpatterns = [
     url(r'^addgame/$', views.addgame, name='addgame'),
     url(r'^game/(?P<pk>[0-9]+)/$', views.game_detail, name='game_detail'),
     url(r'^buygame/(?P<game_id>[0-99]+)/$', views.buyGame, name='buygame'),
+    url(r'^library/', views.myGames, name='library'),
     url(r'^$', views.mainPage, name='mainpage'),
 
 ]

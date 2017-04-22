@@ -37,7 +37,6 @@ def profile(request):
 def game_detail(request, pk):
     game = get_object_or_404(Game, pk=pk)
     if Ownedgame.objects.filter(game_id=pk, user_id=request.user.id).count() == 0:
-        alert("Game not owned")
         return HttpResponseRedirect('/gamelist/')
 
     else:
@@ -145,6 +144,7 @@ def payment_succesfull(request):
     if str(user) != str(buyer):
         title = "Cheater!"
         text = "Not your link!"
+        gamebool = False
 
 
     elif Ownedgame.objects.filter(game_id=gameid, user_id=user.id).count() == 0:
@@ -160,7 +160,8 @@ def payment_succesfull(request):
 
     else:
         title = "Game already owned"
-        text = "Return to gamelist"
+        text = "Return to library"
+        gamebool = False
 
 
     return render(request, "game_bought.html",
@@ -171,7 +172,7 @@ def payment_succesfull(request):
 @login_required(login_url='/login/')
 def payment_failed(request):
     title = "Payment failed"
-    text = "Return to gamelist"
+    text = "Return to library"
     return render(request, "game_bought.html",
         {"title": title, "text": text}
         )
@@ -180,7 +181,7 @@ def payment_failed(request):
 @login_required(login_url='/login/')
 def payment_cancelled(request):
     title = "Payment cancelled by user"
-    text = "Return to gamelist"
+    text = "Return to library"
     return render(request, "game_bought.html",
         {"title": title, "text": text}
         )
@@ -189,19 +190,32 @@ def payment_cancelled(request):
 def gamesInStore(request):
     context = RequestContext(request)
     ownedGames = Ownedgame.objects.filter(user = request.user.id)
-    context['UserGames'] = ownedGames
 
     ownedGameID = []
     for game in ownedGames:
         ownedGameID.append(int(game.game.id))
 
-
     games = Game.objects.all()
+
     context['AllGames'] = games
     games = games.exclude(id__in=ownedGameID)
     context['GamesAvailable'] = games
-    return render(request, "available_games.html", {'context': context})
+    return render(request, "shop.html", {'context': context})
 
 @login_required(login_url='/login')
 def developerView(request):
     pass
+
+@login_required(login_url='/login/')
+def myGames(request):
+
+    context = RequestContext(request)
+    usergames = Ownedgame.objects.all()
+    GameIDs = []
+    for game in usergames:
+        GameIDs.append(int(game.game.id))
+
+    games = Game.objects.filter(id__in=GameIDs)
+
+    context['UserGames'] = games
+    return render(request, "library.html", {'context': context})
