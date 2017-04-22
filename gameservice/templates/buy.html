@@ -1,22 +1,22 @@
 {% extends 'base.html' %}
 {% block title %}Buy Game{% endblock %}
 {% block content %}
-<p>You are about to buy game {{game.name}}, below you can see the description of the game</p>
-<p>{{game.description}}</p>
+<p>You are about to buy game {{context.game.name}}, below you can see the description of the game</p>
+<p>{{context.game.description}}</p>
 
 
 <form id="buyform" action="https://simplepayments.herokuapp.com/pay/" method="POST">
-  <input type="hidden"  name="pid" value={{pid}} />
-  <input type="hidden"  name="sid" value={{sid}} />
+  <input type="hidden"  name="pid" value={{context.pid}} />
+  <input type="hidden"  name="sid" value={{context.sid}} />
 
-  <input type="hidden"  name="success_url" value={{success_url}} />
-  <input type="hidden"  name="cancel_url" value={{cancel_url}} />
-  <input type="hidden"  name="error_url" value={{error_url}} />
+  <input type="hidden"  name="success_url" value={{context.success_url}} />
+  <input type="hidden"  name="cancel_url" value={{context.cancel_url}} />
+  <input type="hidden"  name="error_url" value={{context.error_url}} />
 
-  <input type="hidden"  name="checksum" value={{checksum}} />
-  <input type="hidden"  name="amount" value={{amount}} />
+  <input type="hidden"  name="checksum" value={{context.checksum}} />
+  <input type="hidden"  name="amount" value={{context.amount}} />
 
-  <input type="submit" value="Pay {{game.price}} euros"></input>
+  <input type="submit" value="Pay {{context.game.price}} euros"></input>
 </form>
 
   <!-- <button id="buybutton" type="submit" class="save btn btn-default">BUY</button> -->
