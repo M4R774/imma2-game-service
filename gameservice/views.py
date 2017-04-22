@@ -37,7 +37,7 @@ def profile(request):
 def game_detail(request, pk):
     game = get_object_or_404(Game, pk=pk)
     if Ownedgame.objects.filter(game_id=pk, user_id=request.user.id).count() == 0:
-        return HttpResponseRedirect('/gamelist/')
+        return HttpResponseRedirect('/shop/')
 
     else:
         return render(request, 'game.html', {'game': game})
