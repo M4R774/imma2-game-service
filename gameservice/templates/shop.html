@@ -10,15 +10,5 @@
   <br>
 
 {% endfor %}
-<br>
-
-<p>Omistetut pelit</p>
-{% for game in context.UserGames %}
-  <i><b>Name:</i></b> {{ game.game.name }}
-  <a href="{% url 'game_detail' game.id %}">PLAY</a>
-  <br>
-
-{% endfor %}
-
 
 {% endblock %}

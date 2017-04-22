@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<p>Games you own:</p>
+{% for g in context.UserGames %}
+  <i><b>Name:</i></b> {{ g.name }}
+  <i><b>Description:</i></b> {{ g.description}}
+  <a href="{% url 'game_detail' g.id %}">PLAY</a>
+  <br>
+
+{% endfor %}
+
+{% endblock %}
