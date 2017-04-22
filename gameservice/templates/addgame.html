@@ -3,7 +3,7 @@
 {% block content %}
 
  <h1 id="title">Add New Game</h1>
-    <form method="POST" class="addgame-form">{% csrf_token %}
+    <form method="POST" class="col-sm-2 col-form-label">{% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Save</button>
     </form>
