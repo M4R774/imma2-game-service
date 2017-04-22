@@ -2,7 +2,9 @@
 
 {% block content %}
 <div class="container">
-    <h2>You have now bought a new game!</h2>
-    <p>Click <a href="{% url 'gamelist' %}">here</a> to see your games.</p>
+
+    <h2>{{title}}</h2>
+    <p>Click <a href="{% url 'gamelist' %}">here</a>{{text}}</p>
+
 </div>
 {% endblock %}
