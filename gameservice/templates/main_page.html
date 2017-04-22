@@ -9,9 +9,13 @@
 		{% for game in games %}
 			{% if forloop.first %}<div class="row">{% endif %}
 				<div class="col-xs-4">
+					<div class="game-thumb">
+					<img src=http://novelplanet.com/Uploads/Juu-Sai-no-Saikyou-Madoushi731.jpg></img>
+					<br>
 					<i><b>Name:</i></b> {{ game.name }}
 					<a href="{% url 'game_detail' game.id %}">PLAY</a>
 					<br>
+					</div>
 				</div>
 			{% if forloop.counter|divisibleby:3 %} </div><div class="row"> {% endif %}
 			{% if forloop.last %} </div> {% endif %}
