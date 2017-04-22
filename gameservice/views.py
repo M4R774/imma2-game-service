@@ -19,7 +19,7 @@ from datetime import datetime
 def developer_check(user):
     dev = get_object_or_404(Player, pk=user)
     tosi = dev.developer
-    return tosi
+    pass
 
 def mainPage(request):
     context = RequestContext(request)
