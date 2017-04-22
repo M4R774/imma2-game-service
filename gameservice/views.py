@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, AddGameForm
 from django.template import RequestContext
-from .models import Game, Ownedgame, Player, Highscore
+from .models import Game, Ownedgame, Player, Highscore, User
 from django.utils import timezone
 from django.core.signing import Signer
 
