@@ -3,6 +3,12 @@ body {
   background-image: url("background.jpg");
 }
 
+nav
+{
+   position: fixed;
+   top: 0;
+}
+
 #title {
   font-family: verdana;
   text-align: center;

@@ -1,7 +1,7 @@
-<!DOCTYPE html>
-<head>
+{% extends 'base.html' %}
 
-</head>
+
+{% block content %}
 <body>
 <iframe id="freimi" src="{{game.url}}" height=800 width=90% name="iframe1"></iframe>
 <br><br>
@@ -80,3 +80,5 @@
 		elem.innerHTML += msg +"<br>";
 	}
 </script>
+
+{% endblock %}
