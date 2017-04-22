@@ -24,7 +24,6 @@ def developer_check(user):
 def mainPage(request):
     context = RequestContext(request)
     games = Game.objects.all()
-    context['AllGames'] = games
     return render(request, 'main_page.html', {'games': games})
 
 def about(request):
@@ -149,26 +148,26 @@ def payment_succesfull(request):
     user = request.user
 
     if str(user) != str(buyer):
+        title = "Cheater!"
         text = "Not your link!"
-        url = "/"
+
 
     elif Ownedgame.objects.filter(game_id=gameid, user_id=user.id).count() == 0:
         boughtgame = Ownedgame(game_id=gameid, user_id=user.id)
         game.sales = game.sales + 1
         game.save()
         boughtgame.save()
-        title = "Payment succesful"
-        text = "Game added to your owned games"
-        url = "/gamelist"
-        linkText = "Go to gamelist"
+        title ="Payment succesful"
+        text = "Payment succesful, game added to your owned games"
+
 
     else:
         title = "Game already owned"
-        url = "/gamelist"
-        linkText = "Go to gamelist"
+        text = "Return to gamelist"
+
 
     return render(request, "game_bought.html",
-        {"title": title, "url": url, "text": text, "linkText": linkText}
+        {"title": title, "text": text, "linkText": linkText}
         )
 
 
