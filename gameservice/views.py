@@ -2,7 +2,7 @@ from django.shortcuts import render, render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, AddGameForm
 from django.template import RequestContext
@@ -16,6 +16,10 @@ import time
 import hashlib
 from datetime import datetime
 
+def developer_check(user):
+    dev = get_object_or_404(Player, pk=user)
+    tosi = dev.developer
+    return tosi
 
 def mainPage(request):
     return render(request, 'main_page.html')
@@ -36,6 +40,7 @@ def game_detail(request, pk):
     else:
         return render(request, 'game.html', {'game': game})
 
+@user_passes_test(developer_check)
 @login_required(login_url='/login/')
 def addgame(request):
 
@@ -137,6 +142,7 @@ def payment_succesfull(request):
     gameid = int(pid[1])
     buyer = pid[0]
     game = get_object_or_404(Game, id=gameid)
+
     user = request.user
 
     if str(user) != str(buyer):
@@ -145,7 +151,8 @@ def payment_succesfull(request):
 
     elif Ownedgame.objects.filter(game_id=gameid, user_id=user.id).count() == 0:
         boughtgame = Ownedgame(game_id=gameid, user_id=user.id)
-
+        game.sales = game.sales + 1
+        game.save()
         boughtgame.save()
         title = "Payment succesful"
         text = "Game added to your owned games"
@@ -182,7 +189,9 @@ def gamesInStore(request):
     for game in ownedGames:
         ownedGameID.append(int(game.game.id))
 
+
     games = Game.objects.all()
+    context['AllGames'] = games
     games = games.exclude(id__in=ownedGameID)
     context['GamesAvailable'] = games
     return render_to_response("available_games.html", context)
