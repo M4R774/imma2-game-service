@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<p>Kaupassa olevat pelit</p>
+{% for g in context.GamesAvailable %}
+  <i><b>Name:</i></b> {{ g.name }}
+  <i><b>Sales:</i></b> {{ g.sales}}
+  <a href="{% url 'buygame' g.id %}">BUY</a>
+  <br>
+
+{% endfor %}
+
+{% endblock %}
