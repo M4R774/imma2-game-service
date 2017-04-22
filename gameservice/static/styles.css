@@ -95,3 +95,8 @@ li a {
 li a:hover {
     background-color: #111;
 }
+
+#footerinfo p {
+	font-size: 10pt;
+}
+
