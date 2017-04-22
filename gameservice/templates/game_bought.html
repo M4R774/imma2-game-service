@@ -4,7 +4,9 @@
 <div class="container">
 
     <h2>{{title}}</h2>
-    <p>Click <a href="{% url 'gamelist' %}">here</a>{{text}}</p>
-
+    <p>{{text}}</p>
+    {% if gamebool %}
+    <p><a href="{% url 'game_detail' gameid %}">Play your new game</a></p>
+    {% endif %}
 </div>
 {% endblock %}
