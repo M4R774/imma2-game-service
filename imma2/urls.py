@@ -43,6 +43,8 @@ urlpatterns = [
     url(r'^game/(?P<pk>[0-9]+)/$', views.game_detail, name='game_detail'),
     url(r'^buygame/(?P<game_id>[0-99]+)/$', views.buyGame, name='buygame'),
     url(r'^library/', views.myGames, name='library'),
+    url(r'^dev/', views.developerView, name='dev'),
     url(r'^$', views.mainPage, name='mainpage'),
+
 
 ]

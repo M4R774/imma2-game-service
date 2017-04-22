@@ -66,6 +66,13 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
+            # if checked:
+            #     player = Player(user = user, developer=True)
+            #     player.save()
+            # else:
+            #     player = Player(user = user, developer=False)
+            #     player.save()
+            #
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
@@ -95,6 +102,8 @@ def signup_confirmed(request, signed_value):
         user_pk = signer.unsign(signed_value)
         user = User.objects.get(pk=user_pk)
         user.is_active = True
+        player = Player(user = user, developer=True)
+        player.save()
         user.save()
         return render(request, 'signup_confirmed.html')
     except:
@@ -204,7 +213,15 @@ def gamesInStore(request):
 
 @login_required(login_url='/login')
 def developerView(request):
-    pass
+    context = RequestContext(request)
+    dev = get_object_or_404(Player, pk = request.user)
+    if not dev.developer:
+        return HttpResponseRedirect('/')
+    else:
+        devgames = Game.objects.filter(developer = request.user)
+        context['devgames'] = devgames
+        return render(request, "dev.html", {'context': context})
+
 
 @login_required(login_url='/login/')
 def myGames(request):
