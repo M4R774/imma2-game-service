@@ -37,6 +37,7 @@ def profile(request):
 def game_detail(request, pk):
     game = get_object_or_404(Game, pk=pk)
     if Ownedgame.objects.filter(game_id=pk, user_id=request.user.id).count() == 0:
+        alert("Game not owned")
         return HttpResponseRedirect('/gamelist/')
 
     else:
@@ -112,15 +113,9 @@ def buyGame(request, game_id):
     sid = "imma2isbest"
     secret_key = "796c82d3e9b03deac64262b538ccea0f"
 
-    # testing urls (comment when deployed in heroku)
-    success_url = "http://localhost:5000/payment_succesfull"
-    error_url = "http://localhost:5000/payment_failed"
-    cancel_url = "http://localhost:5000/payment_cancelled"
-
-    # production urls (uncomment when deployed in heroku)
-    # success_url ="https://imma-game-service.herokuapp.com/payment_succesfull"
-    # error_url = "https://imma-game-service.herokuapp.com/payment_failed"
-    # cancel_url = "https://imma-game-service.herokuapp.com/payment_cancelled"
+    success_url = 'http://'+request.get_host()+'/payment_succesfull'
+    error_url = 'http://'+request.get_host()+'/payment_failed'
+    cancel_url = 'http://'+request.get_host()+'/payment_cancelled'
 
     checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
     m = hashlib.md5(checksumstr.encode("ascii"))
@@ -159,6 +154,8 @@ def payment_succesfull(request):
         boughtgame.save()
         title ="Payment succesful"
         text = "Payment succesful, game added to your owned games"
+        gamebool = True
+
 
 
     else:
@@ -167,19 +164,26 @@ def payment_succesfull(request):
 
 
     return render(request, "game_bought.html",
-        {"title": title, "text": text}
+        {"title": title, "text": text, "gamebool": gamebool, "gameid": gameid}
         )
 
 
 @login_required(login_url='/login/')
 def payment_failed(request):
-    # payment failed, what to do
-    pass
+    title = "Payment failed"
+    text = "Return to gamelist"
+    return render(request, "game_bought.html",
+        {"title": title, "text": text}
+        )
+
 
 @login_required(login_url='/login/')
 def payment_cancelled(request):
-    # payment cancelled, what to do
-    pass
+    title = "Payment cancelled by user"
+    text = "Return to gamelist"
+    return render(request, "game_bought.html",
+        {"title": title, "text": text}
+        )
 
 @login_required(login_url='/login/')
 def gamesInStore(request):
