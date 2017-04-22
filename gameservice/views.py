@@ -1,5 +1,5 @@
 from django.shortcuts import render, render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -9,6 +9,7 @@ from django.template import RequestContext
 from .models import Game, Ownedgame, Player, Highscore, User
 from django.utils import timezone
 from django.core.signing import Signer
+from django.views.decorators.csrf import csrf_protect
 
 from django.core.mail import send_mail
 
@@ -41,19 +42,7 @@ def profile(request):
 @login_required(login_url='/login/')
 def game_detail(request, pk):
 
-    if request.method == 'POST':
-
-        if request.POST['message.messageType'] == 'SCORE':
-            scoreasd = int(request.POST['score'])
-            player = request.user
-            gameid = pk
-            gamescore = Highscore(user = player, game = gameid, score = 100)
-            gamescore.save()
-            return HttpResponse("Score saved successfully!")
-
-    scores = Highscore.objects.filter(game = pk)
-
-
+    scores = Highscore.objects.filter(game = pk).order_by('-score')[:5]
     game = get_object_or_404(Game, pk=pk)
     if Ownedgame.objects.filter(game_id=pk, user_id=request.user.id).count() == 0:
         return HttpResponseRedirect('/shop/')
@@ -260,3 +249,16 @@ def myGames(request):
 
     context['UserGames'] = games
     return render(request, "library.html", {'context': context})
+
+@csrf_protect
+def submit_highscore(request, game_id):
+    game = get_object_or_404(Game, pk=game_id)
+    playerid = request.user
+
+
+    if request.POST:
+        scoretosave = request.POST.get('score')
+        if scoretosave:
+            Highscore(score = scoretosave, game = game, player=playerid).save()
+            return HttpResponse('')
+    return HttpResponseBadRequest

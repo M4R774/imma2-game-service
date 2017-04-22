@@ -1,17 +1,15 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
 
-
-
 <body>
+
+	{% for s in scores %}
+	<p> Score: {{s.score}} by: {{s.player.username}}</p>
+	{% endfor %}
+
 <iframe id="freimi" src="{{game.url}}" height=800 width=90% name="iframe1"></iframe>
 <br><br>
-
-{% for score in scores %}
-<p>Score {{score.score}}</p>
-{% endfor %}
 
 <div id="tekstit"><div>
 
@@ -19,14 +17,27 @@
 <script>
 
 
-	var gs = {};
-
 	window.addEventListener("message", function(evt) {
 
 				// If LOAD, update the score
 				if(evt.data.messageType === "SCORE") {
+					changemessage("highscore: " + evt.data.score);
+					var score = evt.data.score;
 
-					changemessage("score submitted: " + evt.data.score);
+
+					$.ajax({
+						url: "{% url 'submit_highscore' game.id %}",
+						type: 'POST',
+						data: {
+							score: score,
+							csrfmiddlewaretoken: '{{ csrf_token }}'
+						},
+						success: function(data) {
+							console.log("game saved");
+						}
+
+					});
+
 				}
 
 	      else if (evt.data.messageType === "SAVE") {
@@ -35,7 +46,7 @@
 	      }
 
 	      else if (evt.data.messageType === "LOAD_REQUEST") {
-					respond();
+
 
 	      }
 
@@ -55,26 +66,14 @@
 	  document.getElementById("freimi").height = y;
 	}
 
-	function respond() {
-		if ( gs == {} ) {
-			var msg = {
-							"messageType": "ERROR",
-
-						};
-		}
-		else {
-			var msg = {
-							"messageType": "ERROR",
-							"gameState": gs
-						};
-		}
 
 
-		changemessage("Responded with load game with score of: " + gs.score );
-		var iframe = document.getElementById("freimi")
-		var x = iframe.contentWindow;
-		x.postMessage(msg, '*');
-	}
+
+	// 	changemessage("Responded with load game with score of: " + gs.score );
+	// 	var iframe = document.getElementById("freimi")
+	// 	var x = iframe.contentWindow;
+	// 	x.postMessage(msg, '*');
+	// }
 
 	function changetarget() {
 		var tekstikentta = document.getElementById("joku");

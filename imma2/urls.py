@@ -41,6 +41,8 @@ urlpatterns = [
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^addgame/$', views.addgame, name='addgame'),
     url(r'^game/(?P<pk>[0-9]+)/$', views.game_detail, name='game_detail'),
+    url(r'^game/(?P<game_id>[0-99]+)/submit_highscore$',
+        views.submit_highscore, name='submit_highscore'),
     url(r'^buygame/(?P<game_id>[0-99]+)/$', views.buyGame, name='buygame'),
     url(r'^library/', views.myGames, name='library'),
     url(r'^dev/', views.developerView, name='dev'),
