@@ -1,18 +1,21 @@
 {% extends 'base.html' %}
 {% block title %}Buy Game{% endblock %}
 {% block content %}
+<p>You are about to buy game {{game.name}}, below you can see the description of the game</p>
+<p>{{game.description}}</p>
+
+
 <form id="buyform" action="https://simplepayments.herokuapp.com/pay/" method="POST">
-  <input  name="pid" value={{pid}} /><br>
-  <input  name="sid" value={{sid}} /><br>
+  <input type="hidden"  name="pid" value={{pid}} />
+  <input type="hidden"  name="sid" value={{sid}} />
 
-  <input  name="success_url" value={{success_url}} /><br>
-  <input  name="cancel_url" value={{cancel_url}} /><br>
-  <input  name="error_url" value={{error_url}} /><br>
+  <input type="hidden"  name="success_url" value={{success_url}} />
+  <input type="hidden"  name="cancel_url" value={{cancel_url}} />
+  <input type="hidden"  name="error_url" value={{error_url}} />
 
-  <input  name="checksum" value={{checksum}} /><br>
-  <input  name="amount" value={{amount}} /><br>
+  <input type="hidden"  name="checksum" value={{checksum}} />
+  <input type="hidden"  name="amount" value={{amount}} />
 
-  <!-- <input  name="checksumstr" value={{checksumstr}} </input> -->
   <input type="submit" value="Pay {{game.price}} euros"></input>
 </form>
 
