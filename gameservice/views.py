@@ -167,7 +167,7 @@ def payment_succesfull(request):
 
 
     return render(request, "game_bought.html",
-        {"title": title, "text": text, "linkText": linkText}
+        {"title": title, "text": text}
         )
 
 

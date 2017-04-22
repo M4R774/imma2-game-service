@@ -3,8 +3,9 @@
 {% block content %}
 <div class="container">
 
-    <h2>{{title}}</h2>
-    <p>Click <a href="{% url 'gamelist' %}">here</a>{{text}}</p>
+    <p>{{title}}</p>
+    <p>{{text}}</p>
+    <p>Click <a href="{% url 'gamelist' %}">here </a> to go to gamelist</p>
 
 </div>
 {% endblock %}
