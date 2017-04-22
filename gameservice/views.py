@@ -40,12 +40,26 @@ def profile(request):
 
 @login_required(login_url='/login/')
 def game_detail(request, pk):
+
+    if request.method == 'POST':
+
+        if request.POST['message.messageType'] == 'SCORE':
+            scoreasd = int(request.POST['score'])
+            player = request.user
+            gameid = pk
+            gamescore = Highscore(user = player, game = gameid, score = 100)
+            gamescore.save()
+            return HttpResponse("Score saved successfully!")
+
+    scores = Highscore.objects.filter(game = pk)
+
+
     game = get_object_or_404(Game, pk=pk)
     if Ownedgame.objects.filter(game_id=pk, user_id=request.user.id).count() == 0:
         return HttpResponseRedirect('/shop/')
 
     else:
-        return render(request, 'game.html', {'game': game})
+        return render(request, 'game.html', {'game': game, 'scores': scores})
 
 
 @login_required(login_url='/login/')
