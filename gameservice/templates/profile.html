@@ -3,7 +3,10 @@
 {% block content %}
 <h1 id="title">Profile</h1>
 {% if devbool %}
-<p><a href="{% url 'dev' %}">DEV PAGE</a></p>
+<!-- <p><a href="{% url 'dev' %}">DEV PAGE</a></p> -->
+<form action="{% url 'dev' %}" class="container text-center">
+  <input type="submit" class="btn btn-primary" value="Developer page"/>
+</form><br>
 {% endif %}
 
 <p><b>User information</b></p>
