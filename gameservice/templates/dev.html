@@ -11,9 +11,7 @@ sales $$$. Developer also has the button to remove a game from the service) -->
 {% if not context.devgames %}
 <p>None</p>
 {% else %}
-<form action="{% url 'addgame' %}" class="container">
-  <input type="submit" class="btn btn-primary" value="ADD A GAME"/>
-</form><br>
+
 {% for g in context.devgames %}
   <i><b>Name:</i></b> {{ g.name }}
   <i><b>Description:</i></b> {{ g.description}}
@@ -32,6 +30,11 @@ sales $$$. Developer also has the button to remove a game from the service) -->
 
 {% endfor %}
 {% endif %}
+
+<form action="{% url 'addgame' %}" class="container">
+  <input type="submit" class="btn btn-primary" value="ADD A GAME"/>
+</form><br>
+
 <br>
 <!-- <p><a href="{% url 'addgame' %}">ADD GAME</a></p> -->
 
