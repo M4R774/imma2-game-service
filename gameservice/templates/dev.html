@@ -25,7 +25,9 @@
 {% endfor %}
 {% endif %}
 
-<p><a href="{% url 'addgame' %}">ADD GAME</a></p>
-
+<!-- <p><a href="{% url 'addgame' %}">ADD GAME</a></p> -->
+<form action="{% url 'addgame' %}" class="container">
+  <input type="submit" class="btn btn-primary" value="ADD A GAME"/>
+</form><br>
 
 {% endblock %}
