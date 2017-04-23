@@ -5,6 +5,59 @@
 * Sami Mäkinen
 * Rasmus Lempinen
 
+## Final report ##
+
+### Features implemented ###
+#### Mandatory ####
+All mandatory features were implemented.
+Hoping for close to max points on these.
+
+#### Optional ####
+We got email validation, bootstrap(mobile friendly) working.
+Game save/load feature works on some games.
+3rd party login, facebook posts or RESTful API not implemented
+Expecting ok points for the ones we implemented.
+
+### Successes and failures/difficulties ###
+#### Successes ####
+- Everyone learned the basics (and much more) of django
+- Work was divided evenly
+- Group coding helped understand and tackle the problems
+- All mandatory features implemented and working
+- Some of the optional features implemented
+
+#### Failures and difficulties ####
+- Time was an issue as we started a bit too late
+- 3rd party login was implemented but not working so we decided to leave it out
+- Save/load feature doesnt work on some of the games
+- Altering models caused us a lot of issues (database/cache had to be cleared)
+- A lot of difficulties in the beginning with the basics of django
+
+### Work division ###
+Everyone did a bit of everything. We did most of our work coding in
+group face-to-face, that's why the commits are a bit unevenly divided between
+team members. We had a good team and coding was fun.
+
+### Instructions to gameshop ###
+#### Login/register ####
+Front page has dummytext and links to login and register. Registration via form
+and email authentication required. Currently django email backend used so
+heroku version has the same link that is sent in the email to authenticate.
+Registration form has selection whether user wants to be a developer.
+
+#### Play/buy games ####
+Front page after login displays all games that are in the service. Shop contains
+the games user hasn't bought. Library has the games user owns. If user owns the
+game the link redirects to game playing page and if not, shop view is shown.
+Game page displays top 10 global highscores of the game selected.
+Currently the service doesn't have a balance system so everyone can basically
+purchase everything.
+
+#### Developers ####
+If user selected developer, profile contains link to dev page. The dev page
+has list of the games added to the service by user. Dev page also has sales
+statistics and an option to remove the game from service.
+
 ## Planned features ##
 ### Views ###
 - Front page (introduction, links to login)
