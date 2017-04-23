@@ -153,7 +153,7 @@ def buyGame(request, game_id):
     context = RequestContext(request)
     user = request.user
     game = get_object_or_404(Game, id=game_id)
-    pid = user.username + "-" + str(game.id) + "-" + str(time.time())
+    pid = user.username + "^" + str(game_id)
     amount = game.price
     sid = "imma2isbest"
     secret_key = "796c82d3e9b03deac64262b538ccea0f"
@@ -173,6 +173,7 @@ def buyGame(request, game_id):
     context['cancel_url'] = cancel_url
     context['error_url'] = error_url
     context['game'] = game
+    context['gameid'] = game.id
     context['checksumstr'] = checksumstr
     return render(request, "buy.html", {'context': context})
 
@@ -183,8 +184,8 @@ def buyGame(request, game_id):
 def payment_succesfull(request):
 
     context = RequestContext(request)
-    pid = request.GET.get('pid', '').split("-")
-    gameid = int(pid[1])
+    pid = request.GET.get('pid', '').split("^")
+    gameid = pid[1]
     buyer = pid[0]
     game = get_object_or_404(Game, id=gameid)
 
@@ -202,14 +203,14 @@ def payment_succesfull(request):
         game.save()
         boughtgame.save()
         title ="Payment succesful"
-        text = "Payment succesful, game added to your owned games"
+        text = "Game added to your library"
         gamebool = True
 
 
 
     else:
         title = "Game already owned"
-        text = "Return to library"
+        text = ""
         gamebool = False
 
 
@@ -221,7 +222,7 @@ def payment_succesfull(request):
 @login_required(login_url='/login/')
 def payment_failed(request):
     title = "Payment failed"
-    text = "Return to library"
+    text = ""
     return render(request, "game_bought.html",
         {"title": title, "text": text}
         )
@@ -230,7 +231,7 @@ def payment_failed(request):
 @login_required(login_url='/login/')
 def payment_cancelled(request):
     title = "Payment cancelled by user"
-    text = "Return to library"
+    text = ""
     return render(request, "game_bought.html",
         {"title": title, "text": text}
         )
