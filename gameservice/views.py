@@ -17,10 +17,17 @@ import time
 import hashlib
 from datetime import datetime
 
+def dev_required(fn=None):
+    dec = user_passes_test(developer_check)
+    if fn:
+        return dec(fn)
+    return dec
+
 def developer_check(user):
-    dev = get_object_or_404(Player, pk=user)
-    tosi = dev.developer
-    pass
+    if user:
+        dev = get_object_or_404(Player, pk=user)
+        return dev.developer
+    return False
 
 def mainPage(request):
     context = RequestContext(request)
@@ -49,7 +56,6 @@ def game_detail(request, pk):
 
     else:
         return render(request, 'game.html', {'game': game, 'scores': scores})
-
 
 @login_required(login_url='/login/')
 def addgame(request):
@@ -240,7 +246,7 @@ def developerView(request):
 def myGames(request):
 
     context = RequestContext(request)
-    usergames = Ownedgame.objects.all()
+    usergames = Ownedgame.objects.filter(user = request.user)
     GameIDs = []
     for game in usergames:
         GameIDs.append(int(game.game.id))
@@ -262,3 +268,10 @@ def submit_highscore(request, game_id):
             Highscore(score = scoretosave, game = game, player=playerid).save()
             return HttpResponse('')
     return HttpResponseBadRequest
+
+
+@login_required
+def delete_game(request, game_id):
+
+    game = get_object_or_404(Game, game = game_id, developer = request.user)
+    pass
