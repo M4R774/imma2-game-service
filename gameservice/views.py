@@ -269,9 +269,10 @@ def submit_highscore(request, game_id):
             return HttpResponse('')
     return HttpResponseBadRequest
 
-
+@dev_required
 @login_required
 def delete_game(request, game_id):
-
-    game = get_object_or_404(Game, game = game_id, developer = request.user)
-    pass
+    game = get_object_or_404(Game, id = game_id, developer = request.user)
+    if game:
+        game.delete()
+    HttpResponseRedirect("/devpage/")

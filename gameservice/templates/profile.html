@@ -3,9 +3,10 @@
 {% block content %}
 <h1 id="title">Profile</h1>
 {% if devbool %}
-<div><a href="{% url 'addgame' %}">ADD GAME</a></div>
-<div><a href="{% url 'dev' %}">DEV PAGE</a></div>
+<p><a href="{% url 'dev' %}">DEV PAGE</a></p>
 {% endif %}
+
+<p>User information</p>
 
 <div><a href="{% url 'shop' %}">Browse shop games</a></div>
 
