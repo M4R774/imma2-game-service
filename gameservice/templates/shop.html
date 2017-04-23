@@ -4,10 +4,26 @@
 
 <p>Kaupassa olevat pelit</p>
 {% for g in context.GamesAvailable %}
-  <i><b>Name:</i></b> {{ g.name }}
+{% if forloop.first %}<div class="row">{% endif %}
+  <div class="col-xs-4">
+    <div class="game-thumb">
+      <a href="{% url 'buygame' g.id %}" class="thumbnail">
+        <img src="http://novelplanet.com/Uploads/Juu-Sai-no-Saikyou-Madoushi731.jpg"
+        alt="Game thumbmail">
+      </a>
+      <p><b>{{ g.name }} </b></p>
+      <!-- <br> -->
+      <p1>{{ g.description }}</p1>
+    </div>
+  </div>
+{% if forloop.counter|divisibleby:3 %} </div><div class="row"> {% endif %}
+{% if forloop.last %} </div> {% endif %}
+
+
+  <!-- <i><b>Name:</i></b> {{ g.name }}
   <i><b>Sales:</i></b> {{ g.sales}}
   <a href="{% url 'buygame' g.id %}">BUY</a>
-  <br>
+  <br> -->
 
 {% endfor %}
 
