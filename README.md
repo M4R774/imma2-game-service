@@ -1,4 +1,3 @@
-https://docs.google.com/document/d/1-ewnhsmQUpAdAhg6CiAEs34RXeRC5-dZ1wzEM0eZJ-A/edit
 ## WSD Project Group 666 ##
 ### Team members ###
 * Aleksi Olavi Martikainen
