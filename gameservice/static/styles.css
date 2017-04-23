@@ -54,7 +54,7 @@ p {
 }
 
 
-ul {
+#MainNavigation {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -72,8 +72,11 @@ li {
     font-family: verdana;
     font-weight: bold;
 	text-align: center;
-	color: yellow;
+	color: black;
 	display: block;
+}
+#MainNavigation li {
+	color: yellow;
 }
 
 li span{
@@ -82,7 +85,7 @@ li span{
 }
 
 
-li:last-child {
+#MainNavigation li:last-child {
   float: right;
 }
 
@@ -102,6 +105,11 @@ li a:hover {
   margin: auto;
 }
 
+#highscores li {
+	display: block;
+	width: 100%;
+	text-align: left;
+}
 
 #footerinfo p {
 	font-size: 10pt;
