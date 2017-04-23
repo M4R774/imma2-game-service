@@ -269,6 +269,33 @@ def submit_highscore(request, game_id):
             return HttpResponse('')
     return HttpResponseBadRequest
 
+@csrf_protect
+def load(request, game_id):
+
+    playerid = request.user
+    ownedgame = get_object_or_404(Ownedgame, game = game_id, user = playerid)
+    return HttpResponse(ownedgame.savedata)
+
+@csrf_protect
+def save(request, game_id):
+    game = get_object_or_404(Game, pk=game_id)
+    playerid = request.user
+
+    datatosave = request.POST['data']
+
+    if datatosave:
+        usergame = get_object_or_404(Ownedgame, game=game_id, user = playerid)
+        usergame.savedata = datatosave
+        usergame.save()
+        return HttpResponse('')
+        #     if datatosave:
+        #         # usergame = get_object_or_404(Ownedgame, game = game_id, user = playerid)
+        #         # usergame.savedata = datatosave
+        #         # usergame.save()
+        #         return HttpResponse('')
+        #
+    return HttpResponseBadRequest
+
 @dev_required
 @login_required
 def delete_game(request, game_id):
