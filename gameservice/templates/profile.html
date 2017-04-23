@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 
+<!-- Profile page that displays user information and developer links if the user
+is a developer
+Always has links to shop and library -->
+
 {% block content %}
 <h1 id="title">Profile</h1><br>
 {% if devbool %}
-<!-- <p><a href="{% url 'dev' %}">DEV PAGE</a></p> -->
 <form action="{% url 'dev' %}" class="container text-center">
   <input type="submit" class="btn btn-primary" value="Developer page"/>
 </form><br>

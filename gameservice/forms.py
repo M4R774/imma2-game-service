@@ -3,6 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Game
 
+# Form that is used to sign up new users, extra fields are email and developer
+# status
 
 class SignUpForm(UserCreationForm):  # forms.ModelForm
     """Displayed when creating profile."""
@@ -19,6 +21,7 @@ class SignUpForm(UserCreationForm):  # forms.ModelForm
             # 'developer': forms.BooleanField()
         }
 
+# Form that is used to add a new game
 
 class AddGameForm(forms.ModelForm):
 

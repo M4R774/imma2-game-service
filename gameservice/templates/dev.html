@@ -3,6 +3,9 @@
 
 {% block content %}
 
+<!-- Page that is displayed only for developers, contains information about
+the games developer currently has in the service (sales number, and total
+sales $$$. Developer also has the button to remove a game from the service) -->
 
 <p>Games you have added to the service:</p>
 {% if not context.devgames %}
@@ -17,7 +20,6 @@
   <i><b>Number of sales:</i></b> {{ g.sales }}
   <i><b>Price:</i></b> {{ g.price }}
   <i><b>Total PROFIT:</i></b> {{ g.sales|mul:g.price }}
-  <!-- <a href="{% url 'delete_game' g.id %}">DELETE</a> -->
   <form action="{% url 'delete_game' g.id %}" class="container">
     <input type="submit" class="btn btn-primary" value="DELETE"/>
   </form>

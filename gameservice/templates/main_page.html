@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}Login{% endblock %}
+<!-- Main page that displays various information depending on if the user is
+logged in or not -->
+
+{% block title %}Main page{% endblock %}
 
 {% block content %}
 	{% if user.is_authenticated %}
@@ -84,40 +87,6 @@
     </a>
   </div>
 </div>
-
-	<!--
-		<h1 id="title">WELCOME TO IMMA2 GAME-SERVICE! GL&HF</h1>
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-4">
-					<div class="jumbotron">
-						<h2>BUY GAMES! </h2>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam congue arcu eget
-						sem sollicitudin commodo. Sed venenatis, quam sit amet pulvinar pulvinar, dolor ipsum
-						vestibulum erat, sed ornare mauris metus a purus.  </p>
-						<p><a class="btn btn-primary btn-lg" href="{% url 'about' %}" role="button">Learn more</a></p>
-					</div>
-				</div>
-				<div class="col-xs-4">
-					<div class="jumbotron">
-						<h2>PLAY GAMES! </h2>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam congue arcu eget
-						sem sollicitudin commodo. Sed venenatis, quam sit amet pulvinar pulvinar, dolor ipsum
-						vestibulum erat, sed ornare mauris metus a purus. </p>
-						<p><a class="btn btn-primary btn-lg" href="{% url 'about' %}" role="button">Learn more</a></p>
-					</div>
-				</div>
-				<div class="col-xs-4">
-					<div class="jumbotron">
-						<h2>SOCIALIZE AND COMPETE!</h2>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam congue arcu eget
-						sem sollicitudin commodo. Sed venenatis, quam sit amet pulvinar pulvinar, dolor ipsum
-						vestibulum erat, sed ornare mauris metus a purus.  </p>
-						<p><a class="btn btn-primary btn-lg" href="{% url 'about' %}" role="button">Learn more</a></p>
-					</div>
-				</div>
-		-->
-
 
 	{% endif %}
 	</div>

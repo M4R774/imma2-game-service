@@ -17,6 +17,10 @@ import time
 import hashlib
 from datetime import datetime
 
+# ------------------------------------------------------------------
+# functions that are used to check if user is a developer
+# usage @dev_required before a view
+
 def dev_required(fn=None):
     dec = user_passes_test(developer_check)
     if fn:
@@ -29,14 +33,20 @@ def developer_check(user):
         return dev.developer
     return False
 
+# ------------------------------------------------------------------
+
+# View to render the main page. Passes all games to the template
 def mainPage(request):
     context = RequestContext(request)
     games = Game.objects.all()
     return render(request, 'main_page.html', {'games': games})
 
+# View to render the about page
 def about(request):
     return render(request, 'about.html')
 
+# View to render the profile page. Login is required and if player
+# has developer status and passes it as boolean value to template
 @login_required(login_url='/login/')
 def profile(request):
     dev = get_object_or_404(Player, pk = request.user)
@@ -46,6 +56,8 @@ def profile(request):
         devbool = False
     return render(request, 'profile.html', {'devbool': devbool})
 
+# View to redirect the user to game playing page. If user doesnt own the game
+# redirects the user to shop
 @login_required(login_url='/login/')
 def game_detail(request, pk):
 
@@ -57,6 +69,8 @@ def game_detail(request, pk):
     else:
         return render(request, 'game.html', {'game': game, 'scores': scores})
 
+# View to add a new game, only displayed if user is developer. Otherwise
+# redirects user to main page
 @login_required(login_url='/login/')
 def addgame(request):
 
@@ -81,6 +95,7 @@ def addgame(request):
 
         return HttpResponseRedirect('/')
 
+# View to sign up the user, sends the confirmation email
 def signup(request):
 
     if request.method == 'POST':
@@ -114,6 +129,8 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
+# If the link is clicked the confirmation is succesful and user is set to
+# active status and can log in
 def signup_confirmed(request, signed_value):
     """
     Activates a user when they open this view (which they received by mail).
@@ -128,7 +145,8 @@ def signup_confirmed(request, signed_value):
     except:
         return HttpResponseRedirect("/denied")
 
-
+# View to buy a game via simplepayments service. Uses a secret key and
+# calculates a checksum that is validated by the payment service
 @login_required(login_url='/login/')
 def buyGame(request, game_id):
 
@@ -158,6 +176,9 @@ def buyGame(request, game_id):
     context['checksumstr'] = checksumstr
     return render(request, "buy.html", {'context': context})
 
+# -----------------------------------------------------------
+# User is redirected to one of these views depending on the
+# status that the payment service returns
 @login_required(login_url='/login/')
 def payment_succesfull(request):
 
@@ -174,7 +195,7 @@ def payment_succesfull(request):
         text = "Not your link!"
         gamebool = False
 
-
+    # Succesful purchase, add game to ownedgames and add sales +1
     elif Ownedgame.objects.filter(game_id=gameid, user_id=user.id).count() == 0:
         boughtgame = Ownedgame(game_id=gameid, user_id=user.id)
         game.sales = game.sales + 1
@@ -214,6 +235,9 @@ def payment_cancelled(request):
         {"title": title, "text": text}
         )
 
+# -----------------------------------------------------------
+
+# view to display the games in store that user doesnt already own
 @login_required(login_url='/login/')
 def gamesInStore(request):
     context = RequestContext(request)
@@ -230,6 +254,8 @@ def gamesInStore(request):
     context['GamesAvailable'] = games
     return render(request, "shop.html", {'context': context})
 
+# View to display the developer view. Contains the list of developers own
+# games
 @login_required(login_url='/login')
 def developerView(request):
     context = RequestContext(request)
@@ -241,7 +267,7 @@ def developerView(request):
         context['devgames'] = devgames
         return render(request, "dev.html", {'context': context})
 
-
+# View to display user owned games that the user can play
 @login_required(login_url='/login/')
 def myGames(request):
 
@@ -256,11 +282,12 @@ def myGames(request):
     context['UserGames'] = games
     return render(request, "library.html", {'context': context})
 
+# View that is called when the iframe submits a highscore
+# to the service
 @csrf_protect
 def submit_highscore(request, game_id):
     game = get_object_or_404(Game, pk=game_id)
     playerid = request.user
-
 
     if request.POST:
         scoretosave = request.POST.get('score')
@@ -269,6 +296,8 @@ def submit_highscore(request, game_id):
             return HttpResponse('')
     return HttpResponseBadRequest
 
+# View that is called when iframe submits a load request
+# returns the savedata from database
 @csrf_protect
 def load(request, game_id):
 
@@ -276,6 +305,9 @@ def load(request, game_id):
     ownedgame = get_object_or_404(Ownedgame, game = game_id, user = playerid)
     return HttpResponse(ownedgame.savedata)
 
+# View that is called when iframe submits a save request
+# the json data is parsed in javascript and text version is saved
+# to the database
 @csrf_protect
 def save(request, game_id):
     game = get_object_or_404(Game, pk=game_id)
@@ -288,14 +320,10 @@ def save(request, game_id):
         usergame.savedata = datatosave
         usergame.save()
         return HttpResponse('')
-        #     if datatosave:
-        #         # usergame = get_object_or_404(Ownedgame, game = game_id, user = playerid)
-        #         # usergame.savedata = datatosave
-        #         # usergame.save()
-        #         return HttpResponse('')
-        #
+
     return HttpResponseBadRequest
 
+# View that is used to delete a developers game
 @dev_required
 @login_required
 def delete_game(request, game_id):

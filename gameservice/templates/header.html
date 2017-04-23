@@ -1,14 +1,17 @@
 {% block header %}
 
+<!-- Header for navigation between pages, displaying different pages
+depending on if user is logged in -->
+
 <nav class="navbar navbar-inverse">
 	<ul id="MainNavigation" class="nav navbar-nam">
 		<li><a href="{% url 'mainpage' %}">HOME</a></li>
 		{% if user.is_authenticated %}
 			<li><a href="{% url 'logout' %}">LOGOUT</a></li>
 			<li><a href="{% url 'profile' %}">PROFILE</a></li>
+			<li><a href="{% url 'shop' %}">SHOP</a></li>
 			<li><a href="{% url 'library' %}">LIBRARY</a></li>
 			<li><span> Hello, {{request.user}} </span> </li>
-		<!-- Yläpuolella olevalle tarvitaan joku hieno muotoilu vielä  -->
 		{% else %}
 			<li><a href="{% url 'login' %}">LOGIN</a></li>
 			<li><a href="{% url 'signup' %}">REGISTER</a></li>

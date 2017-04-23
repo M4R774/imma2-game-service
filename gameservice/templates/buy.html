@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}Buy Game{% endblock %}
 {% block content %}
+
+<!-- Page that contains hidden form that is used to communicate with simplepayments
+payment service.  -->
+
 <p>You are about to buy game {{context.game.name}}, below you can see the description of the game</p>
 <p>{{context.game.description}}</p>
 

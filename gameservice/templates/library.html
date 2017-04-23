@@ -2,13 +2,12 @@
 
 {% block content %}
 
-<!-- <p>Games you own:</p> -->
+<!-- Contains the games user has bought from the store, has links to the game
+playing page -->
+
 <h1 id="title">Games you own</h1>
 {% for g in context.UserGames %}
-  <!-- <i><b>Name:</i></b> {{ g.name }}
-  <i><b>Description:</i></b> {{ g.description}}
-  <a href="{% url 'game_detail' g.id %}">PLAY</a>
-  <br> -->
+
 
 
   {% if forloop.first %}<div class="row">{% endif %}
@@ -19,7 +18,6 @@
           alt="Game thumbmail">
         </a>
         <p><b>{{ g.name }} </b></p>
-        <!-- <br> -->
         <p1>{{ g.description }}</p1>
       </div>
     </div>

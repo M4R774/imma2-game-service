@@ -2,6 +2,8 @@
 {% block title %}Login{% endblock %}
 {% block content %}
 
+<!-- Form that is used to add new games, page only allowed for developers -->
+
  <h1 id="title">Add New Game</h1>
     <form method="POST" class="col-sm-2 col-form-label">{% csrf_token %}
         {{ form.as_p }}
@@ -9,5 +11,3 @@
     </form>
 
 {% endblock %}
-
-

@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 
+Page that displays the actual javascript games. Has eventlisteners for
+messages that the game posts. Save, load and score messages are transfered
+to the service using ajax.
+
+Displays top 5 global highscores.
+
+Settings are currently adjusted directly in javascript
+
 {% block content %}
 
 <div class="container">
@@ -27,15 +35,7 @@
 
 window.addEventListener("message", function(evt) {
 
-	// If LOAD, update the score
 	if(evt.data.messageType === "SCORE") {
-
-		// $.post("{% url 'save' game.id %}",
-		// 	{
-		// 		type: "SCORE",
-		// 		score: event.data.score,
-		// 		csrfmiddlewaretoken: '{{ csrf_token }}'
-		// 	})
 
 		var score = evt.data.score;
 
@@ -88,57 +88,15 @@ window.addEventListener("message", function(evt) {
 	}
 
 
-	// 	$.get("{% url 'load' game.id %}",
-	// 	{
-	// 		type: "LOAD_REQUEST",
-	// 		csrfmiddlewaretoken: '{{ csrf_token }}'
-	// 	}),
-	//
-	// 	function (data,status){
-	// 		var message;
-	//
-	// 		if (data.length > 1) {
-	// 			var obj = JSON.parse(data);
-	// 			message = {messageType: "LOAD", gameState: obj} ;
-	// 		}
-	// 		else {
-	// 			message = {messageType: "ERROR", info: "Gamestate could not be loaded"}
-	// 		}
-	// 		var iframe = getElementById("freimi");
-	// 		freimi.contentWindow.postMessage(message, "{% url 'game_detail' game.id %}");
-	// 	}
-	// 	console.log("load request");
-	// }
-
 	else if (evt.data.messageType === "SETTING") {
 		adjustIframe(evt.data.options.width, evt.data.options.height);
-		changemessage("settings requested: " + evt.data.options.height + "x" + evt.data.options.width);
 	}
-
 
 });
 
-	function changeMessage(msg) {
-		document.getElementById("asd").innerHTML = msg;
-
-	}
 	function adjustIframe(x, y) {
 	  document.getElementById("freimi").width = x;
 	  document.getElementById("freimi").height = y;
-	}
-
-
-
-
-	// 	changemessage("Responded with load game with score of: " + gs.score );
-	// 	var iframe = document.getElementById("freimi")
-	// 	var x = iframe.contentWindow;
-	// 	x.postMessage(msg, '*');
-	// }
-
-	function changemessage(msg) {
-		var elem = document.getElementById("tekstit");
-		elem.innerHTML += msg +"<br>";
 	}
 
 </script>
