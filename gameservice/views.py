@@ -1,5 +1,5 @@
 from django.shortcuts import render, render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -9,6 +9,7 @@ from django.template import RequestContext
 from .models import Game, Ownedgame, Player, Highscore, User
 from django.utils import timezone
 from django.core.signing import Signer
+from django.views.decorators.csrf import csrf_protect
 
 from django.core.mail import send_mail
 
@@ -31,34 +32,48 @@ def about(request):
 
 @login_required(login_url='/login/')
 def profile(request):
-    return render(request, 'profile.html')
+    dev = get_object_or_404(Player, pk = request.user)
+    if dev.developer:
+        devbool = True
+    else:
+        devbool = False
+    return render(request, 'profile.html', {'devbool': devbool})
 
 @login_required(login_url='/login/')
 def game_detail(request, pk):
+
+    scores = Highscore.objects.filter(game = pk).order_by('-score')[:5]
     game = get_object_or_404(Game, pk=pk)
     if Ownedgame.objects.filter(game_id=pk, user_id=request.user.id).count() == 0:
         return HttpResponseRedirect('/shop/')
 
     else:
-        return render(request, 'game.html', {'game': game})
+        return render(request, 'game.html', {'game': game, 'scores': scores})
 
 
 @login_required(login_url='/login/')
 def addgame(request):
 
-    context = RequestContext(request)
+    dev = get_object_or_404(Player, pk = request.user)
+    if dev.developer:
 
-    if request.method == "POST":
-        form = AddGameForm(request.POST)
-        if form.is_valid():
-            newgame = form.save(commit=False)
-            newgame.developer = request.user
-            newgame.date_published = timezone.now()
-            newgame.save()
-            return redirect('game_detail', pk=newgame.pk)
+        context = RequestContext(request)
+
+        if request.method == "POST":
+            form = AddGameForm(request.POST)
+            if form.is_valid():
+                newgame = form.save(commit=False)
+                newgame.developer = request.user
+                newgame.date_published = timezone.now()
+                newgame.save()
+                return redirect('game_detail', pk=newgame.pk)
+        else:
+            form = AddGameForm()
+        return render(request, 'addgame.html', {'form': form})
+
     else:
-        form = AddGameForm()
-    return render(request, 'addgame.html', {'form': form})
+
+        return HttpResponseRedirect('/')
 
 def signup(request):
 
@@ -66,13 +81,13 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            # if checked:
-            #     player = Player(user = user, developer=True)
-            #     player.save()
-            # else:
-            #     player = Player(user = user, developer=False)
-            #     player.save()
-            #
+            if form.cleaned_data["applyAsDeveloper"]:
+                player = Player(user = user, developer=True)
+                player.save()
+            else:
+                player = Player(user = user, developer=False)
+                player.save()
+
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
@@ -102,8 +117,6 @@ def signup_confirmed(request, signed_value):
         user_pk = signer.unsign(signed_value)
         user = User.objects.get(pk=user_pk)
         user.is_active = True
-        player = Player(user = user, developer=True)
-        player.save()
         user.save()
         return render(request, 'signup_confirmed.html')
     except:
@@ -236,3 +249,16 @@ def myGames(request):
 
     context['UserGames'] = games
     return render(request, "library.html", {'context': context})
+
+@csrf_protect
+def submit_highscore(request, game_id):
+    game = get_object_or_404(Game, pk=game_id)
+    playerid = request.user
+
+
+    if request.POST:
+        scoretosave = request.POST.get('score')
+        if scoretosave:
+            Highscore(score = scoretosave, game = game, player=playerid).save()
+            return HttpResponse('')
+    return HttpResponseBadRequest

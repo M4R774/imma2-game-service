@@ -8,6 +8,7 @@ class SignUpForm(UserCreationForm):  # forms.ModelForm
     """Displayed when creating profile."""
     # Had to create a new form for the email, as the user.email was not required
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'autocomplete': 'off', 'class': 'form-control'}))
+    applyAsDeveloper = forms.NullBooleanField(label="Apply as Developer", widget=forms.CheckboxInput(), required=False)
 
     class Meta:
         model = User
@@ -15,6 +16,7 @@ class SignUpForm(UserCreationForm):  # forms.ModelForm
         widgets = {
             'password': forms.PasswordInput(attrs={'autocomplete': 'off', 'class': 'form-control'}),
             'username': forms.TextInput(attrs={'autocomplete': 'off', 'class': 'form-control'})
+            # 'developer': forms.BooleanField()
         }
 
 
