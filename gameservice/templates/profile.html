@@ -6,9 +6,17 @@
 <p><a href="{% url 'dev' %}">DEV PAGE</a></p>
 {% endif %}
 
-<p>User information</p>
+<p><b>User information</b></p>
+<h1 class="container"><kbd> Username: {{request.user}}</kbd> </h1>
+<h1 class="container"><kbd> Email: {{request.user.email}}</kbd> </h1><br>
 
-<div><a href="{% url 'shop' %}">Browse shop games</a></div>
+<!-- <div class="container"><a href="{% url 'shop' %}">Browse shop games</a></div> -->
+<form action="{% url 'shop' %}" class="container">
+  <input type="submit" class="btn btn-primary" value="Browse shop games"/>
+</form><br>
 
+<form action="{% url 'library' %}" class="container">
+  <input type="submit" class="btn btn-primary" value="Browse your owned games"/>
+</form>
 
 {% endblock %}

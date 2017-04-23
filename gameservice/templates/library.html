@@ -2,7 +2,8 @@
 
 {% block content %}
 
-<p>Games you own:</p>
+<!-- <p>Games you own:</p> -->
+<h1 id="title">Games you own</h1>
 {% for g in context.UserGames %}
   <i><b>Name:</i></b> {{ g.name }}
   <i><b>Description:</i></b> {{ g.description}}
