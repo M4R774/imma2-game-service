@@ -12,7 +12,7 @@
 <div id="tekstit"><div>
 
 <script>
-
+	var gs = {};
 
 	window.addEventListener("message", function(evt) {
 
@@ -81,6 +81,7 @@
 		var elem = document.getElementById("tekstit");
 		elem.innerHTML += msg +"<br>";
 	}
+
 </script>
 
 {% endblock %}
