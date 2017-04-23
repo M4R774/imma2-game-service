@@ -6,7 +6,10 @@
     <h2>{{title}}</h2>
     <p>{{text}}</p>
     {% if gamebool %}
-    <p><a href="{% url 'game_detail' gameid %}">Play your new game</a></p>
+    <!-- <p><a href="{% url 'game_detail' gameid %}">Play your new game</a></p> -->
+    <form action="{% url 'game_detail' gameid %}" class="container text-center">
+      <input type="submit" class="btn btn-primary" value="Player your new game"/>
+    </form><br>
     {% endif %}
 </div>
 {% endblock %}

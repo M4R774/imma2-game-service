@@ -1,53 +1,84 @@
-# Heroku Django Starter Template
+## WSD Project Group 666 ##
+### Team members ###
+* Aleksi Olavi Martikainen
+* Anu Tolvanen
+* Sami Mäkinen
+* Rasmus Lempinen
 
-An utterly fantastic project starter template for Django 1.10.
+## Planned features ##
+### Views ###
+- Front page (introduction, links to login)
+- Login page
+- Register page
+- Game list
+- Game adding page
+- Game page (Where the game is played)
+- Game buying page
+- Profile, nick, email, list of games owned by user
+- List of games submitted by dev
 
-## Features
+### Models
+##### Game
+- name
+- description
+- url
+- price
+- sales (times sold)
+- developer (foreignKey Developer)
+- players(manytomany field Player)
+- date published
 
-- Production-ready configuration for Static Files, Database Settings, Gunicorn, etc.
-- Enhancements to Django's static file serving functionality via WhiteNoise.
-- Latest Python 3.6 runtime environment. 
+##### Player
+- user (foreignKey User)
+- email
+- nick
+- (saved games) TODO
 
-## How to Use
+##### Developer
+- user(one-to-one relation to User)
 
-To use this project, follow these steps:
-
-1. Create your working environment.
-2. Install Django (`$ pip install django`)
-3. Create a new project using this template
-
-## Creating Your Project
-
-Using this template to create a new Django app is easy::
-
-    $ django-admin.py startproject --template=https://github.com/heroku/heroku-django-template/archive/master.zip --name=Procfile helloworld
-
-(If this doesn't work on windows, replace `django-admin.py` with `django-admin`)
-
-You can replace ``helloworld`` with your desired project name.
-
-## Deployment to Heroku
-
-    $ git init
-    $ git add -A
-    $ git commit -m "Initial commit"
-
-    $ heroku create
-    $ git push heroku master
-
-    $ heroku run python manage.py migrate
-
-See also, a [ready-made application](https://github.com/heroku/python-getting-started), ready to deploy.
-
-## Using Python 2.7?
-
-Just update `runtime.txt` to `python-2.7.13` (no trailing spaces or newlines!).
+##### Highscore
+- player (foreignKey Player)
+- game (foreignKey Player)
+- score
 
 
-## License: MIT
+### Other features ###
+- Authentication
+- Games ( 3 own + 3rd party games )
+- 3rd party login
+- Email validation
+- Security restrictions
+- Basic game inventory and sales statistics
+- Play games
+- Django auth
+- login, logout, register(player or dev)
+- Buy games, play games, see game high scores
+- high scores
 
-## Further Reading
+### How features are implemented ###
 
-- [Gunicorn](https://warehouse.python.org/project/gunicorn/)
-- [WhiteNoise](https://warehouse.python.org/project/whitenoise/)
-- [dj-database-url](https://warehouse.python.org/project/dj-database-url/)
+Timeline:
+1. ~~Make a skeleton for the program (project folders) /templates, /css, /images~~
+2. Implement at least one javascript game per group member
+3. Empty views/templates and navigation between them (urls.py, views.py, templates)
+4. Create models and login functionality
+5. Test models, views and login
+6. Edit the views to correspond the requirements
+7. Minimum required features
+8. (possible additional features)
+
+All pages will be implemented with django templates.
+
+#### Some key features described: ####
+
+- Login: Authentication using django authentication
+- Registeration: Register with a form, (possible email validation)
+- Playing games: Inside an iframe
+
+### How we plan to work on with the project ###
+- f2f meetings regularly
+- Telegram for communication
+- Git issues for assigning work
+  * 24 open issues in Gitlab
+- Google docs for project plan

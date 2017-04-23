@@ -8,13 +8,19 @@
 {% if not context.devgames %}
 <p>None</p>
 {% else %}
+<form action="{% url 'addgame' %}" class="container">
+  <input type="submit" class="btn btn-primary" value="ADD A GAME"/>
+</form><br>
 {% for g in context.devgames %}
   <i><b>Name:</i></b> {{ g.name }}
   <i><b>Description:</i></b> {{ g.description}}
   <i><b>Number of sales:</i></b> {{ g.sales }}
   <i><b>Price:</i></b> {{ g.price }}
   <i><b>Total PROFIT:</i></b> {{ g.sales|mul:g.price }}
-  <a href="{% url 'delete_game' g.id %}">DELETE</a>
+  <!-- <a href="{% url 'delete_game' g.id %}">DELETE</a> -->
+  <form action="{% url 'delete_game' g.id %}" class="container">
+    <input type="submit" class="btn btn-primary" value="DELETE"/>
+  </form>
 
   <br>
 
@@ -24,8 +30,7 @@
 
 {% endfor %}
 {% endif %}
-
-<p><a href="{% url 'addgame' %}">ADD GAME</a></p>
-
+<br>
+<!-- <p><a href="{% url 'addgame' %}">ADD GAME</a></p> -->
 
 {% endblock %}

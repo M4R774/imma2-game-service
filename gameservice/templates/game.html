@@ -2,12 +2,24 @@
 
 {% block content %}
 
-	{% for s in scores %}
-	<p> Score: {{s.score}} by: {{s.player.username}}</p>
-	{% endfor %}
-
-<iframe id="freimi" src="{{game.url}}" height=800 width=90% name="iframe1"></iframe>
-<br><br>
+<div class="container">
+	<div class="row">
+		<div class="col-xs-9">
+			<iframe id="freimi" src="{{game.url}}" height=800 width=90% name="iframe1"></iframe>
+		</div>
+		<div class="col-xs-3">
+			<p>Highscores</p>
+			<ul class="list-group" id="highscores">
+				{% for s in scores %}
+					<li class="list-group-item">
+						<span class="badge">{{s.score}}</span>
+						{{s.player.username}}
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+</div>
 
 <div id="tekstit"><div>
 
